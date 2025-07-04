@@ -2,6 +2,12 @@ from django.contrib import admin
 
 from .models import *
 
+class SpecificationInline(admin.TabularInline):
+    model = ProductSpecification
+    extra = 1
+    max_num = 20
+
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
@@ -31,5 +37,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'short_description']
 
     inlines = [
-        ProductImageInline
+        SpecificationInline,
+        ProductImageInline,
     ]
