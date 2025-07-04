@@ -3,6 +3,28 @@ from django.utils.text import gettext_lazy as _
 
 from categories.models import Category
 
+
+class ProductImage(models.Model):
+    """
+       Stores images related to a product.
+
+       Attributes:
+           product (Product): The related product.
+           image (ImageField): Image file uploaded.
+           is_main (bool): Indicates if the image is the main image for the product.
+       """
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(upload_to='products/')
+    is_main = models.BooleanField(_('is_main'), default=False)
+
+    def __str__(self):
+        return self.image.name
+
+
 class Product(models.Model):
     """
       Represents a product in the store.
