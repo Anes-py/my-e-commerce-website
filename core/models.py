@@ -19,3 +19,42 @@ class SiteSettings(models.Model):
 
     def __str__(self):
         return self.site_name
+
+
+class SliderBanners(models.Model):
+    site_setting = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name='slider_banners')
+    image = models.ImageField(_("image"), upload_to='banners/')
+    url = models.URLField(_("link"), blank=True, null=True)
+    is_active = models.BooleanField(_("is_active"), default=True)
+    order = models.PositiveIntegerField(_("ordering"), default=0)
+    created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+
+class SideBanners(models.Model):
+    site_setting = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name='side_banners')
+    image = models.ImageField(_("image"), upload_to='banners/')
+    url = models.URLField(_("link"), blank=True, null=True)
+    is_active = models.BooleanField(_("is_active"), default=True)
+    order = models.PositiveIntegerField(_("ordering"), default=0)
+    created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+
+class MiddleBanners(models.Model):
+    site_setting = models.ForeignKey(SiteSettings, on_delete=models.CASCADE, related_name='middle_banners')
+    image = models.ImageField(_("image"), upload_to='banners/')
+    url = models.URLField(_("link"), blank=True, null=True)
+    is_active = models.BooleanField(_("is_active"), default=True)
+    order = models.PositiveIntegerField(_("ordering"), default=0)
+    created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated_at"), auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
