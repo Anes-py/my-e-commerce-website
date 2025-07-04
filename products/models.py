@@ -3,6 +3,26 @@ from django.utils.text import gettext_lazy as _
 
 from categories.models import Category
 
+class ProductSpecification(models.Model):
+    """
+    Represents a key-value specification for a product.
+
+    Attributes:
+        product (Product): The product this specification belongs to.
+        key (str): The name of the specification (e.g., "Material").
+        value (str): The value of the specification (e.g., "Cotton").
+    """
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+        related_name='specifications'
+    )
+    key = models.CharField(_("key"), max_length=55)
+    value = models.CharField(_("value"), max_length=55)
+
+    def __str__(self):
+        return f"{self.key}: {self.value}"
+
 
 class ProductImage(models.Model):
     """
