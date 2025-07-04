@@ -3,6 +3,35 @@ from django.utils.text import gettext_lazy as _
 
 from categories.models import Category
 
+class FeatureOption(models.Model):
+    """
+    Represents a selectable feature for a product, such as color or size.
+
+    Attributes:
+        product (Product): The related product.
+        feature (str): Type of feature, either 'Color' or 'Size'.
+        value (str): The actual value of the feature (e.g., "Red", "XL").
+    """
+    class Feature(models.TextChoices):
+        Color = 'c', _('Color')
+        Size = 's', _('Size')
+
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+        related_name='feature_options',
+    )
+    feature = models.CharField(
+        _('feature'),
+        max_length=1,
+        choices=Feature.choices
+    )
+    value = models.CharField(_("value"), max_length=155)
+
+    def __str__(self):
+        return f"{self.feature}: {self.value}"
+
+
 class ProductSpecification(models.Model):
     """
     Represents a key-value specification for a product.
