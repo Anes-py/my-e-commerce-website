@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser
+from .models import CustomUser, SiteSettings, SliderBanners, SideBanners, MiddleBanners
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 @admin.register(CustomUser)
@@ -13,3 +13,52 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields':('email',)}),
     )
     fieldsets = UserAdmin.fieldsets
+
+
+class SliderBannersInline(admin.TabularInline):
+    model = SliderBanners
+    fields = [
+        'image',
+        'url',
+        'is_active',
+        'order',
+    ]
+    max_num = 8
+
+
+class SideBannersInline(admin.TabularInline):
+    model = SideBanners
+    fields = [
+        'image',
+        'url',
+        'is_active',
+        'order',
+    ]
+    max_num = 2
+    min_num = 2
+
+
+class MiddleBannersInline(admin.TabularInline):
+    model = MiddleBanners
+    fields = [
+        'image',
+        'url',
+        'is_active',
+        'order',
+    ]
+    max_num = 2
+    min_num = 2
+
+
+@admin.register(SiteSettings)
+class SiteSettingAdmin(admin.ModelAdmin):
+    list_display = [
+        'site_name',
+    ]
+    list_display_links = ['site_name']
+
+    inlines = [
+        SliderBannersInline,
+        SideBannersInline,
+        MiddleBannersInline,
+    ]
