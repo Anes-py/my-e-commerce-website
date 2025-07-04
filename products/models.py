@@ -1,8 +1,81 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.text import gettext_lazy as _
 from django.utils import timezone
 
 from categories.models import Category
+
+
+class ProductManager(models.Manager):
+    """
+    Custom manager for Product model, providing commonly used queryset filters.
+    """
+    def active(self):
+        """
+        Returns only active products.
+
+        Returns:
+            QuerySet: Active products.
+        """
+        return self.get_queryset().filter(is_active=True)
+
+    def newest(self):
+        """
+        Returns the newest active products, ordered by creation date (descending),
+        with related discount data preloaded.
+
+        Returns:
+            QuerySet: Newest active products.
+        """
+        return self.active().order_by('-created_at').select_related('discount')
+
+    def with_discount(self):
+        """
+        Returns active products with currently valid discounts.
+
+        A discount is considered valid if:
+        - It's active.
+        - Its start date is in the past or null.
+        - Its expire date is in the future or null.
+
+        Returns:
+            QuerySet: Products with valid discounts, ordered by stock descending.
+        """
+        now = timezone.now()
+        return self.active().filter(
+            Q(discount__start_date__lte=now) | Q(discount__start_date__isnull=True),
+            Q(discount__expire_date__gte=now) | Q(discount__expire_date__isnull=True),
+            discount__is_active=True,
+        ).select_related('discount').order_by('-stock')
+
+
+    def by_category(self, category_slug):
+        """
+        Returns active products filtered by category slug.
+
+        Args:
+            category_slug (str): The slug of the category.
+
+        Returns:
+                QuerySet: Products in the specified category.
+        """
+        return self.active().filter(category__slug=category_slug).select_related('category')
+
+    def search(self, query):
+        """
+        Searches active products by name or short description (case-insensitive).
+
+        Args:
+            query (str): The search keyword.
+
+        Returns:
+            QuerySet: Matching active products.
+        """
+        return self.active().filter(
+            Q(name__icontains=query) |
+            Q(short_description__icontains=query)
+        )
+
 
 class FeatureOption(models.Model):
     """
@@ -157,6 +230,9 @@ class Product(models.Model):
             return int(self.discount.apply_discount(final_price))
         return int(final_price)
 
+
+    objects = ProductManager
+
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
@@ -208,3 +284,67 @@ class Discount(models.Model):
     class Meta:
         verbose_name = _("Discount")
         verbose_name_plural = _("Discount")
+
+
+class Coupon(models.Model):
+    """
+    Represents a coupon that can be applied to a cart.
+
+    Attributes:
+        code (str): Unique coupon code.
+        discount_type (str): Type of discount (Fixed, Percent, Free Shipping).
+        value (decimal): The amount or percent value of the discount.
+        is_active (bool): Whether the coupon is currently active.
+        start_date (datetime): When the coupon becomes valid.
+        expire_date (datetime): When the coupon expires.
+    """
+    class DiscountType(models.TextChoices):
+        FIXED = 'F', _('Fixed Amount')
+        PERCENT = 'P', _('Percent')
+        FREE_SHIPPING = 'S', _("Free Shipping")
+
+    code = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    discount_type = models.CharField(max_length=1, choices=[('F', 'Fixed'), ('P', 'Percent'), ('S', 'Free Shipping')])
+    value = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    expire_date = models.DateTimeField(null=True, blank=True)
+
+    def is_valid(self):
+        """
+        Checks if the coupon is active and within the valid date range.
+
+        Returns:
+            bool: True if valid, otherwise False.
+        """
+        now = timezone.now()
+        return self.is_active and (not self.start_date or self.start_date <= now) and (not self.expire_date or self.expire_date >= now)
+
+    def apply_to_cart(self, total_price, shipping_cost):
+        """
+        Applies the coupon to the cart's total and/or shipping cost.
+
+        Args:
+            total_price (float): The total cart price before discount.
+            shipping_cost (float): The current shipping cost.
+
+        Returns:
+            tuple: (new_total_price, new_shipping_cost)
+        """
+        if not self.is_valid():
+            return total_price, shipping_cost
+
+        if self.discount_type == 'P':
+            total_price = max(total_price * (1 - self.value / 100), 0)
+
+        elif self.discount_type == 'F':
+            total_price = max(total_price - self.value, 0)
+
+        elif self.discount_type == 'S':
+            shipping_cost = 0
+
+        return total_price, shipping_cost
+
+    class Meta:
+        verbose_name = _("Coupon")
+        verbose_name_plural = _("Coupons")
