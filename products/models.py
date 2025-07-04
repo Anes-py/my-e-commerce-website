@@ -128,6 +128,35 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def has_valid_discount(self):
+        """
+        Checks whether the product has a valid and active discount.
+
+        Returns:
+            bool: True if the discount is valid, otherwise False.
+        """
+        if not self.discount:
+            return False
+
+        now = timezone.now()
+        return (
+                self.discount.is_active and
+                (self.discount.start_date is None or self.discount.start_date <= now) and
+                (self.discount.expire_date is None or self.discount.expire_date >= now)
+        )
+
+    def get_final_price(self):
+        """
+        Calculates the final price of the product after applying the discount.
+
+        Returns:
+            int: Final price after discount, or original price if no valid discount.
+        """
+        final_price = self.price
+        if self.discount and self.discount.is_valid():
+            return int(self.discount.apply_discount(final_price))
+        return int(final_price)
+
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")

@@ -64,3 +64,4 @@ class DiscountAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 30
     ordering = ['is_active']
+
