@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.utils import timezone
 from django.db.models import Subquery, OuterRef
 
+from categories.models import Category
 from .models import Product, ProductImage
 
 def home_view(request):
@@ -14,8 +14,10 @@ def home_view(request):
 
     newest_products = Product.objects.newest().annotate(main_image=Subquery(main_image_subquery))[:50]
 
+    top_categories = Category.objects.all()[:6]  # demo ***
 
     return render(request, 'products/home.html', {
         'discounted_products': discounted_products,
         'newest_products': newest_products,
+        'top_categories': top_categories
         })
