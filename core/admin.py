@@ -24,6 +24,7 @@ class SliderBannersInline(admin.TabularInline):
         'order',
     ]
     max_num = 8
+    extra = 1
 
 
 class SideBannersInline(admin.TabularInline):
