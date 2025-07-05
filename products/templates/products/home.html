@@ -1009,91 +1009,22 @@
               class="flex flex-wrap items-center justify-center gap-8 lg:justify-between"
             >
               <!-- Category -->
-
+            {% for category in top_categories %}
               <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
                 <div
                   class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
                 >
                   <img
-                    alt=""
+                    alt="loading"
                     class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c1.jpg' %}"
+                    src="{{ category.image.url }}"
                   />
                 </div>
                 <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  جوراب مردانه
+                  {{ category.name }}
                 </p>
               </a>
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
-                <div
-                  class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
-                >
-                  <img
-                    alt=""
-                    class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c3.jpg' %}"
-                  />
-                </div>
-                <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  کفش ورزشی مردانه
-                </p>
-              </a>
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
-                <div
-                  class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
-                >
-                  <img
-                    alt=""
-                    class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c6.jpg' %}"
-                  />
-                </div>
-                <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  کیف مردانه
-                </p>
-              </a>
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
-                <div
-                  class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
-                >
-                  <img
-                    alt=""
-                    class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c2.jpg' %}"
-                  />
-                </div>
-                <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  جوراب زنانه
-                </p>
-              </a>
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
-                <div
-                  class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
-                >
-                  <img
-                    alt=""
-                    class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c4.jpg' %}"
-                  />
-                </div>
-                <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  کفش ورزشی زنانه
-                </p>
-              </a>
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
-                <div
-                  class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
-                >
-                  <img
-                    alt=""
-                    class="relative h-25 w-25 rounded-full"
-                    src="{% static 'images/categories/c5.jpg' %}"
-                  />
-                </div>
-                <p class="line-clamp-2 h-10 text-center text-sm sm:text-base">
-                  کیف زنانه
-                </p>
-              </a>
+              {% endfor %}
             </div>
           </div>
         </section>
