@@ -195,6 +195,14 @@ class Product(models.Model):
         choices=ProductStatus.choices
     )
     is_active = models.BooleanField(_("is active"), default=True)
+    discount = models.OneToOneField(
+        'Discount',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='products',
+        verbose_name=_("discount")
+    )
     created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated_at"), auto_now=True)
 
@@ -230,8 +238,7 @@ class Product(models.Model):
             return int(self.discount.apply_discount(final_price))
         return int(final_price)
 
-
-    objects = ProductManager
+    objects = ProductManager()
 
     class Meta:
         verbose_name = _("Product")
