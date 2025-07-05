@@ -61,22 +61,6 @@ class ProductManager(models.Manager):
         """
         return self.active().filter(category__slug=category_slug).select_related('category')
 
-    def search(self, query):
-        """
-        Searches active products by name or short description (case-insensitive).
-
-        Args:
-            query (str): The search keyword.
-
-        Returns:
-            QuerySet: Matching active products.
-        """
-        return self.active().filter(
-            Q(name__icontains=query) |
-            Q(short_description__icontains=query)
-        )
-
-
 class FeatureOption(models.Model):
     """
     Represents a selectable feature for a product, such as color or size.
