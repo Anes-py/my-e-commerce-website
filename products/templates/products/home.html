@@ -825,7 +825,7 @@
                       <div class="mb-2 md:mb-5" draggable="false">
                         <a href='product-detail.html'>
                           <img
-                            alt="{{ product.main_image.url }}"
+                            alt="{{ product.name }}"
                             class="mx-auto w-32 rounded-lg md:w-auto"
                             src="media/{{ product.main_image }}"
                           />
@@ -916,9 +916,9 @@
                       <div class="mb-2 md:mb-5" draggable="false">
                         <a href='product-detail.html'>
                           <img
-                            alt=""
+                            alt="{{ product.name }}"
                             class="mx-auto w-32 rounded-lg md:w-auto"
-                            src="{% static 'images/products/p4.png' %}"
+                            src="{{ main_image_url_prefix }}{{ product.main_image }}"
                           />
                         </a>
                       </div>

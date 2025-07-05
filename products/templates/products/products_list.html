@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block page_title %} لیست مجصولات {% endblock %}
+{% block page_title %} لیست محصولات {% endblock %}
 
 {% block page_content %}
 
@@ -421,6 +421,7 @@
                 class="grid grid-cols-2 gap-px gap-y-2 xs:gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               >
                 <!-- Product Card -->
+                  {% for product in product_list %}
                 <div
                   class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
                 >
@@ -431,589 +432,56 @@
                     <div class="mb-2 md:mb-5" draggable="false">
                       <a href='product-detail.html'>
                         <img
-                          alt=""
+                          alt="loading"
                           class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
+                          src="{{ main_image_url_prefix }}{{ product.main_image }}"
                         />
                       </a>
                     </div>
                     <!-- title -->
                     <div class="mb-1">
                       <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
+                        {{ product.name }}
                       </a>
                     </div>
                     <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
+                      <div class="flex flex-col">
+                        <!-- Old price -->
+                        <div class="h-5 text-left">
+                    {% if product.has_valid_discount %}
+                      <del class="text-sm text-text/60 decoration-warning md:text-base">
+                        {{ product.price }}
+                      </del>
+                    {% else %}
+                      <del class="invisible text-sm text-text/60 decoration-warning md:text-base">
+                        {{ product.price }}
+                      </del>
+                    {% endif %}
+                  </div>
+                        <div class="flex items-center justify-between">
+                           {% if product.has_valid_discount %}
+                          <div>
+                            <p
+                              class="w-9 rounded-full bg-warning py-px text-center text-sm text-white"
+                            >
+                              {{ product.discount.value }} %
+                            </p>
+                          </div>
+                          {% endif %}
+                          <!-- New price -->
+                          <div
+                            class="text-sm font-bold text-primary md:text-base"
                           >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
+                            {{ product.get_final_price }}
+                            <span class="text-xs font-light md:text-sm"
+                              >تومان</span
+                            >
+                          </div>
                         </div>
                       </div>
-                    </div>
                   </div>
                 </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Product Card -->
-                <div
-                  class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
-                >
-                  <div
-                    class="relative rounded-xl bg-muted p-2 shadow-base md:p-5"
-                  >
-                    <!-- image -->
-                    <div class="mb-2 md:mb-5" draggable="false">
-                      <a href='product-detail.html'>
-                        <img
-                          alt=""
-                          class="mx-auto w-32 rounded-lg md:w-auto"
-                          src="{% static 'images/products/p8.png' %}"
-                        />
-                      </a>
-                    </div>
-                    <!-- title -->
-                    <div class="mb-1">
-                      <a class='line-clamp-2 h-10 text-sm md:h-12 md:text-base' href='product-detail.html'>
-                        کیف دوشی زنانه درسا مدل 49787
-                      </a>
-                    </div>
-                    <!-- Prices -->
-                    <div class="flex flex-col">
-                      <!-- Old price -->
-                      <div class="h-5 text-left">
-                        <del
-                          class="text-xs text-text/60 decoration-warning xs:text-sm md:text-base"
-                        >
-                          10,000,000
-                        </del>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p
-                            class="w-7 rounded-full bg-warning py-px text-center text-xs text-white xs:w-9 xs:text-sm"
-                          >
-                            60%
-                          </p>
-                        </div>
-                        <!-- New price -->
-                        <div
-                          class="text-xs font-bold text-primary xs:text-sm md:text-base"
-                        >
-                          400,000,000
-                          <span class="text-xs font-light md:text-sm"
-                            >تومان</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  {% endfor %}
               </div>
               <!-- Pagination -->
               <div
