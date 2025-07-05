@@ -21,3 +21,6 @@ def home_view(request):
         'newest_products': newest_products,
         'top_categories': top_categories
         })
+
+def product_list_view(request):
+    return render(request, 'products/products_list.html')
