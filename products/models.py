@@ -48,7 +48,6 @@ class ProductManager(models.Manager):
             discount__is_active=True,
         ).select_related('discount').order_by('-stock')
 
-
     def by_category(self, category_slug):
         """
         Returns active products filtered by category slug.
@@ -60,6 +59,40 @@ class ProductManager(models.Manager):
                 QuerySet: Products in the specified category.
         """
         return self.active().filter(category__slug=category_slug).select_related('category')
+
+    def search(self, query):
+        """
+        Searches active products by name or short description (case-insensitive).
+
+        Args:
+            query (str): The search keyword.
+
+        Returns:
+            QuerySet: Matching active products.
+        """
+        return self.active().filter(
+            Q(name__icontains=query) |
+            Q(short_description__icontains=query)
+        )
+
+    def most_expensive(self):
+        """
+        Returns active products ordered by price descending.
+
+        Returns:
+            QuerySet: Active products sorted from most expensive to cheapest.
+        """
+        return self.active().order_by('-price')
+
+    def cheapest(self):
+        """
+        Returns active products ordered by price ascending.
+
+        Returns:
+            QuerySet: Active products sorted from cheapest to most expensive.
+        """
+        return self.active().order_by('price')
+
 
 class FeatureOption(models.Model):
     """
