@@ -9,14 +9,26 @@ from .models import ProductImage, Product
 @receiver(pre_save, sender=ProductImage)
 def set_main_image(sender, instance, **kwargs):
     """
-    Ensures that only one ProductImage per product is marked as the main image.
-
-    Before saving a ProductImage instance, if `is_main` is set to True,
-    this function sets `is_main=False` for all other images of the same product.
+    Ensures one main image per product.
+    If none exist, set the first one as main by default.
     """
+    if not instance.product_id:
+        return
+
     if instance.is_main:
-        ProductImage.objects.filter(product=instance.product).\
-            exclude(id=instance.id).update(is_main=False)
+        with transaction.atomic():
+            ProductImage.objects.filter(
+                product=instance.product
+            ).exclude(id=instance.id).update(is_main=False)
+
+    else:
+        existing_main = ProductImage.objects.filter(
+            product=instance.product,
+            is_main=True
+        ).exclude(id=instance.id).exists()
+
+        if not existing_main:
+            instance.is_main = True
 
 
 @receiver(pre_save, sender=Product)
