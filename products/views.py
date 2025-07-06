@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.db.models import Subquery, OuterRef, Q
 from django.conf import settings
 from django.utils import timezone
+from django.core.paginator import Paginator
+
 
 from categories.models import Category
 from .models import Product, ProductImage
@@ -38,6 +40,8 @@ def product_list_view(request):
 
     if search_query:
         queryset = Product.objects.search(search_query)
+    if filter_query == 'newest':
+        queryset = Product.objects.newest()
 
     if filter_query == 'discounted':
         queryset = Product.objects.with_discount()
@@ -53,8 +57,12 @@ def product_list_view(request):
         is_main=True,
     ).values('image')[:1]
     queryset = queryset.annotate(main_image=Subquery(main_image_subquery))
+    paginator = Paginator(queryset, 5)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'products/products_list.html', context={
-        'product_list': queryset,
+        'page_obj': page_obj,
         'main_image_url_prefix': settings.MEDIA_URL,
     })
