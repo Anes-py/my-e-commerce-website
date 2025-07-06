@@ -393,26 +393,24 @@
                     <p>مرتب سازی بر اساس</p>
                   </div>
                   <!-- Sort Buttons -->
-                  <button
-                    class="sort-button-active rounded-lg px-1 py-2 text-sm hover:bg-background hover: lg:px-4"
-                  >
-                    جدید ترین
-                  </button>
-                  <button
-                    class="rounded-lg px-1 py-2 text-sm hover:bg-background hover: lg:px-4"
-                  >
-                    پرفروش ترین
-                  </button>
-                  <button
-                    class="rounded-lg px-1 py-2 text-sm hover:bg-background hover: lg:px-4"
-                  >
-                    گران ترین
-                  </button>
-                  <button
-                    class="rounded-lg px-1 py-2 text-sm hover:bg-background hover: lg:px-4"
-                  >
-                    ارزان ترین
-                  </button>
+{% with request.GET.f as active_filter %}
+<a href="?f=" class="rounded-lg px-1 py-2 text-sm hover:bg-background lg:px-4 {% if not active_filter %}sort-button-active{% endif %}">
+  نمایش همه
+</a>
+<a href="?f=newest" class="rounded-lg px-1 py-2 text-sm hover:bg-background lg:px-4 {% if active_filter == 'newest' %}sort-button-active{% endif %}">
+  جدیدترین
+</a>
+<a href="?f=most_expensive" class="rounded-lg px-1 py-2 text-sm hover:bg-background lg:px-4 {% if active_filter == 'most_expensive' %}sort-button-active{% endif %}">
+  گران‌ترین
+</a>
+<a href="?f=cheapest" class="rounded-lg px-1 py-2 text-sm hover:bg-background lg:px-4 {% if active_filter == 'cheapest' %}sort-button-active{% endif %}">
+  ارزان‌ترین
+</a>
+<a href="?f=discounted" class="rounded-lg px-1 py-2 text-sm hover:bg-background lg:px-4 {% if active_filter == 'discounted' %}sort-button-active{% endif %}">
+  دارای تخفیف
+</a>
+{% endwith %}
+
                 </div>
               </div>
 
@@ -421,7 +419,7 @@
                 class="grid grid-cols-2 gap-px gap-y-2 xs:gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               >
                 <!-- Product Card -->
-                  {% for product in product_list %}
+                  {% for product in page_obj %}
                 <div
                   class="border-gradient group relative rounded-base p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-base"
                 >
@@ -488,41 +486,48 @@
                 class="flex items-center justify-center gap-x-4 md:justify-end"
               >
                 <!-- Previous page-->
+                {% if page_obj.has_previous %}
                 <a
                   class="pagination-button flex items-center justify-center"
-                  href="#"
+                  href="?page={{ page_obj.previous_page_number }}"
                 >
                   <svg class="h-6 w-6">
                     <use xlink:href="#chevron-right"></use>
                   </svg>
                 </a>
+                {% endif %}
 
-                <!-- Pages -->
-                <div class="flex items-center gap-x-2">
-                  <a
-                    class="pagination-button pagination-button-active"
-                    href="#"
-                  >
-                    1
-                  </a>
-                  <p class="text-sm text-text/60">...</p>
-
-                  <a class="pagination-button" href="#"> 3 </a>
-                  <a class="pagination-button" href="#"> 4 </a>
-
-                  <p class="text-sm text-text/60">...</p>
-
-                  <a class="pagination-button" href="#"> 10 </a>
-                </div>
+ <div class="flex items-center gap-x-2">
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <!-- current page -->
+        <span class="pagination-button pagination-button-active">
+          {{ num }}
+        </span>
+      {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+        <a class="pagination-button" href="?page={{ num }}">
+          {{ num }}
+        </a>
+      {% elif num == 1 or num == page_obj.paginator.num_pages %}
+        <a class="pagination-button" href="?page={{ num }}">
+          {{ num }}
+        </a>
+      {% elif forloop.last or forloop.first %}
+        <span class="text-sm text-text/60">...</span>
+      {% endif %}
+    {% endfor %}
+  </div>
                 <!-- Next page-->
+                {% if page_obj.has_next %}
                 <a
                   class="flex h-8 w-8 items-center justify-center rounded-full bg-muted transition-all duration-200 hover:bg-primary hover:text-white hover:dark:bg-emerald-600"
-                  href="#"
+                  href="?page={{ page_obj.next_page_number }}"
                 >
                   <svg class="h-6 w-6">
                     <use xlink:href="#chevron-left"></use>
                   </svg>
                 </a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -844,93 +849,27 @@
         id="shop-sort-drawer-navigation"
         tabindex="-1"
       >
-        <div
-          class="flex items-center justify-between gap-x-4 border-b p-4 pb-5"
-        >
-          <h5 class="text-lg text-text/90">مرتب سازی بر اساس</h5>
-          <button
-            aria-controls="user-account-drawer-navigation"
-            class="inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-text/90 hover:bg-zinc-100 hover:text-gray-900 dark:hover:bg-black dark:hover:text-white"
-            data-drawer-hide="shop-sort-drawer-navigation"
-            type="button"
-          >
-            <svg class="h-5 w-5">
-              <use xlink:href="#close" />
-            </svg>
+{% with request.GET.f as active_filter %}
+<div class="p-4 space-y-2">
+  <a href="?f=" class="block rounded-lg px-3 py-2 text-sm {% if not active_filter %}bg-primary text-white{% else %}hover:bg-gray-100{% endif %}">
+    نمایش همه
+  </a>
+  <a href="?f=newest" class="block rounded-lg px-3 py-2 text-sm {% if active_filter == 'newest' %}bg-primary text-white{% else %}hover:bg-gray-100{% endif %}">
+    جدیدترین
+  </a>
+  <a href="?f=most_expensive" class="block rounded-lg px-3 py-2 text-sm {% if active_filter == 'most_expensive' %}bg-primary text-white{% else %}hover:bg-gray-100{% endif %}">
+    گران‌ترین
+  </a>
+  <a href="?f=cheapest" class="block rounded-lg px-3 py-2 text-sm {% if active_filter == 'cheapest' %}bg-primary text-white{% else %}hover:bg-gray-100{% endif %}">
+    ارزان‌ترین
+  </a>
+  <a href="?f=discounted" class="block rounded-lg px-3 py-2 text-sm {% if active_filter == 'discounted' %}bg-primary text-white{% else %}hover:bg-gray-100{% endif %}">
+    دارای تخفیف
+  </a>
+</div>
+{% endwith %}
 
-            <span class="sr-only">Close menu</span>
-          </button>
-        </div>
-
-        <div class="main-scroll h-full space-y-2 divide-y overflow-y-auto p-4">
-          <fieldset class="flex flex-col space-y-2">
-            <legend class="sr-only">Sort</legend>
-
-            <div>
-              <input
-                class="peer hidden"
-                id="sort-new"
-                name="sort"
-                type="radio"
-                value="1"
-              />
-
-              <label
-                class="relative block w-full cursor-pointer rounded-lg border p-4 shadow-base peer-checked:border-emerald-500 peer-checked:dark:border-emerald-400"
-                for="sort-new"
-              >
-                <p class="text-center text-text/90">جدید ترین</p>
-              </label>
-            </div>
-            <div>
-              <input
-                class="peer hidden"
-                id="sort-sale"
-                name="sort"
-                type="radio"
-                value="2"
-              />
-
-              <label
-                class="relative block w-full cursor-pointer rounded-lg border p-4 shadow-base peer-checked:border-emerald-500 peer-checked:dark:border-emerald-400"
-                for="sort-sale"
-              >
-                <p class="text-center text-text/90">پرفروش ترین</p>
-              </label>
-            </div>
-            <div>
-              <input
-                class="peer hidden"
-                id="sort-expensive"
-                name="sort"
-                type="radio"
-                value="2"
-              />
-
-              <label
-                class="relative block w-full cursor-pointer rounded-lg border p-4 shadow-base peer-checked:border-emerald-500 peer-checked:dark:border-emerald-400"
-                for="sort-expensive"
-              >
-                <p class="text-center text-text/90">گران ترین</p>
-              </label>
-            </div>
-            <div>
-              <input
-                class="peer hidden"
-                id="sort-chip"
-                name="sort"
-                type="radio"
-                value="2"
-              />
-
-              <label
-                class="relative block w-full cursor-pointer rounded-lg border p-4 shadow-base peer-checked:border-emerald-500 peer-checked:dark:border-emerald-400"
-                for="sort-chip"
-              >
-                <p class="text-center text-text/90">ارزان ترین</p>
-              </label>
-            </div>
-          </fieldset>
-        </div>
       </div>
+
 {% endblock %}
+<script src="{% static 'js/drawer.js' %}"></script>
