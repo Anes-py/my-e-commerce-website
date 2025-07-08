@@ -55,7 +55,18 @@ class ProductListView(generic.ListView):
         ).values('image')[:1]
         return queryset.annotate(main_image=Subquery(main_image_subquery))
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        querydict = self.request.GET.copy()
+
+        for key in list(querydict.keys()):
+            if querydict.get(key) == '':
+                del querydict[key]
+        querydict.pop('page', None)
+        querystring = querydict.urlencode()
+
         context['main_image_url_prefix'] = settings.MEDIA_URL
+        context['querystring'] = querystring
         return context
+
+
