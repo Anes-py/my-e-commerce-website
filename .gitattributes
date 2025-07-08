@@ -1,4 +1,7 @@
-*.py linguist-language=Python linguist-weight=10
-*.html linguist-language=HTML linguist-weight=1
-*.css linguist-language=CSS linguist-weight=1
-*.scss linguist-language=SCSS linguist-weight=1
+templates/_base.html linguist-vendored
+
+
+*.py linguist-detectable=true
+*.html linguist-detectable=true
+*.js linguist-detectable=true
+*.css linguist-detectable=true
