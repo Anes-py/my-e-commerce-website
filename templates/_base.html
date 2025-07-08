@@ -2914,27 +2914,36 @@
                 <div class="container">
 
                   <div class="relative" id="mobileHeaderSearchBase">
-                  <form action="" method="get">
-                    <div
-                      id="mobileHeaderSearchWrapper"
-                      class="flex items-center justify-between rounded-lg border-b-transparent bg-background px-2 dark:border-white/10 dark:border-b-transparent"
-                    >
-                      <div>
-                        <svg class="h-6 w-6">
-                          <use xlink:href="#search" />
-                        </svg>
-                      </div>
-                      <label class="sr-only">Mobile header search</label>
-                      <input
-                        id="mobileHeaderSearch"
-                        name="q"
-                        class="flex grow rounded-lg border-none bg-background px-2 py-3 outline-none placeholder:text-sm placeholder:text-text/60 focus:ring-0 placeholder:"
-                        placeholder="جستجو کنید ..."
-                        type="text"
-                        value="{{ request.GET.q }}"
-                      />
-                    </div>
-                  </form>
+                  <form action="" method="get" class="w-full">
+  {% for key, value in request.GET.items %}
+    {% if key != 'q' %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endif %}
+  {% endfor %}
+
+  <div
+    id="mobileHeaderSearchWrapper"
+    class="flex items-center justify-between rounded-lg border-b-transparent bg-background px-2 dark:border-white/10 dark:border-b-transparent"
+  >
+
+    <button type="submit" class="p-2">
+      <svg class="h-6 w-6">
+        <use xlink:href="#search" />
+      </svg>
+    </button>
+
+    <label for="mobileHeaderSearch" class="sr-only">Mobile header search</label>
+    <input
+      id="mobileHeaderSearch"
+      name="q"
+      class="flex grow rounded-lg border-none bg-background px-2 py-3 outline-none placeholder:text-sm placeholder:text-text/60 focus:ring-0"
+      placeholder="جستجو کنید ..."
+      type="text"
+      value="{{ request.GET.q }}"
+    />
+  </div>
+</form>
+
                     <div
                       id="mobileHeaderSearchResult"
                       class="absolute inset-x-0 top-full hidden w-full overflow-hidden rounded-b-lg border border-t-transparent bg-muted dark:border-white/10 dark:border-t-transparent"
