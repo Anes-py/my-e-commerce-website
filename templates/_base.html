@@ -967,27 +967,36 @@
                   </a>
                 </div>
                 <!-- Search -->
+
+
                 <div
                   class="relative max-w-xl flex-1"
                   id="desktopHeaderSearchBase"
                 >
+                  <form action="" method="get">
                   <div
                     id="desktopHeaderSearchWrapper"
                     class="flex items-center justify-between rounded-lg border-b-transparent bg-background px-2 dark:border-white/10 dark:border-b-transparent"
                   >
+
                     <div>
                       <svg class="h-6 w-6">
                         <use xlink:href="#search" />
                       </svg>
                     </div>
+
                     <label class="sr-only">desktop header search</label>
                     <input
                       id="desktopHeaderSearch"
+                      name="q"
                       class="flex grow rounded-lg border-none bg-background px-2 py-3 text-text/90 outline-none placeholder:text-sm placeholder:text-text/60 focus:ring-0 placeholder:"
                       placeholder="جستجو کنید ..."
+                      value="{{ request.GET.q }}"
                       type="text"
                     />
+
                   </div>
+                     </form>
                   <div
                     id="desktopHeaderSearchResult"
                     class="absolute inset-x-0 top-full hidden w-full overflow-hidden rounded-b-lg border border-t-transparent bg-muted dark:border-white/10 dark:border-t-transparent"
@@ -2903,7 +2912,9 @@
                 id="mobile-header-bottom"
               >
                 <div class="container">
+
                   <div class="relative" id="mobileHeaderSearchBase">
+                  <form action="" method="get">
                     <div
                       id="mobileHeaderSearchWrapper"
                       class="flex items-center justify-between rounded-lg border-b-transparent bg-background px-2 dark:border-white/10 dark:border-b-transparent"
@@ -2916,11 +2927,14 @@
                       <label class="sr-only">Mobile header search</label>
                       <input
                         id="mobileHeaderSearch"
+                        name="q"
                         class="flex grow rounded-lg border-none bg-background px-2 py-3 outline-none placeholder:text-sm placeholder:text-text/60 focus:ring-0 placeholder:"
                         placeholder="جستجو کنید ..."
                         type="text"
+                        value="{{ request.GET.q }}"
                       />
                     </div>
+                  </form>
                     <div
                       id="mobileHeaderSearchResult"
                       class="absolute inset-x-0 top-full hidden w-full overflow-hidden rounded-b-lg border border-t-transparent bg-muted dark:border-white/10 dark:border-t-transparent"
@@ -3146,6 +3160,7 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
