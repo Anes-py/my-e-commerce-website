@@ -11,7 +11,7 @@ class ProductOptionsInline(admin.TabularInline):
 class SpecificationInline(admin.TabularInline):
     model = ProductSpecification
     extra = 1
-    max_num = 20
+    max_num = 15
 
 
 class ProductImageInline(admin.TabularInline):
@@ -64,4 +64,3 @@ class DiscountAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 30
     ordering = ['is_active']
-

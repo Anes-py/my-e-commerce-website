@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.text import gettext_lazy as _
 from django.utils import timezone
+from django.db.models import Subquery, OuterRef
 
 from categories.models import Category
 
@@ -11,13 +12,17 @@ class ProductManager(models.Manager):
     Custom manager for Product model, providing commonly used queryset filters.
     """
     def active(self):
+        main_image_subquery = ProductImage.objects.filter(
+            product=OuterRef('pk'),
+            is_main=True,
+        ).values('image')[:1]
         """
         Returns only active products.
 
         Returns:
             QuerySet: Active products.
         """
-        return self.get_queryset().filter(is_active=True)
+        return self.get_queryset().filter(is_active=True).annotate(main_image=Subquery(main_image_subquery))
 
     def newest(self):
         """

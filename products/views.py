@@ -1,22 +1,17 @@
-from django.db.models import Subquery, OuterRef
 from django.shortcuts import render
 from django.conf import settings
 from django.views import generic
 
 from categories.models import Category
-from .models import Product, ProductImage
+from .models import Product
 
 
 class HomePageView(generic.View):
     def get(self, request, *args, **kwargs):
-        main_image_subquery = ProductImage.objects.filter(
-            product=OuterRef('pk'),
-            is_main=True,
-        ).values('image')[:1]
 
-        discounted_products = Product.objects.with_discount().annotate(main_image=Subquery(main_image_subquery))[:50]
+        discounted_products = Product.objects.with_discount()[:50]
 
-        newest_products = Product.objects.newest().annotate(main_image=Subquery(main_image_subquery))[:50]
+        newest_products = Product.objects.newest()[:50]
 
         top_categories = Category.objects.all()[:6]  # demo ***
 
@@ -31,6 +26,7 @@ class HomePageView(generic.View):
 class ProductListView(generic.ListView):
     template_name = 'products/products_list.html'
     paginate_by = 32
+
     def get_queryset(self):
         queryset = Product.objects.newest()
         search_query = self.request.GET.get('q')
@@ -48,12 +44,7 @@ class ProductListView(generic.ListView):
         if filter_query in filter_map:
             queryset = filter_map[filter_query]
 
-
-        main_image_subquery = ProductImage.objects.filter(
-            product=OuterRef('pk'),
-            is_main=True,
-        ).values('image')[:1]
-        return queryset.annotate(main_image=Subquery(main_image_subquery))
+        return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,4 +64,5 @@ class ProductListView(generic.ListView):
 class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'products/product_detail.html'
-    context_object_name = 'product'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
