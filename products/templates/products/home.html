@@ -207,11 +207,11 @@
                         <div class="h-5 text-left">
                     {% if product.has_valid_discount %}
                       <del class="text-sm text-text/60 decoration-warning md:text-base">
-                        {{ product.price }}
+                        {{ product.price|intcomma }}
                       </del>
                     {% else %}
                       <del class="invisible text-sm text-text/60 decoration-warning md:text-base">
-                        {{ product.price }}
+                        {{ product.price|intcomma }}
                       </del>
                     {% endif %}
                   </div>
@@ -229,7 +229,7 @@
                           <div
                             class="text-sm font-bold text-primary md:text-base"
                           >
-                            {{ product.get_final_price }}
+                            {{ product.get_final_price|intcomma }}
                             <span class="text-xs font-light md:text-sm"
                               >تومان</span
                             >
