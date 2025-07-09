@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.views import generic
+from .models import FeatureOption
 
 from categories.models import Category
 from .models import Product
@@ -66,3 +67,21 @@ class ProductDetailView(generic.DetailView):
     template_name = 'products/product_detail.html'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        features_options = FeatureOption.objects.filter(product=self.object)
+        context = super().get_context_data(**kwargs)
+        context['color_options'] = list(
+            features_options
+            .filter(feature=FeatureOption.Feature.Color)
+            .values_list('value', flat=True)
+            .distinct()
+        )
+
+        context['size_options'] = list(
+            features_options
+            .filter(feature=FeatureOption.Feature.Size)
+            .values_list('value', flat=True)
+            .distinct()
+        )
+        return context
