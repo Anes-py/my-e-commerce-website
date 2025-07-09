@@ -111,6 +111,38 @@ class FeatureOption(models.Model):
     class Feature(models.TextChoices):
         Color = 'c', _('Color')
         Size = 's', _('Size')
+    class Color(models.TextChoices):
+        RED = 'red', _('قرمز')
+        BLUE = 'blue', _('آبی')
+        GREEN = 'green', _('سبز')
+        BLACK = 'black', _('مشکی')
+        WHITE = 'white', _('سفید')
+        YELLOW = 'yellow', _('زرد')
+        ORANGE = 'orange', _('نارنجی')
+        PURPLE = 'purple', _('بنفش')
+        PINK = 'pink', _('صورتی')
+        BROWN = 'brown', _('قهوه‌ای')
+        GRAY = 'gray', _('خاکستری')
+        SILVER = 'silver', _('نقره‌ای')
+        GOLD = 'gold', _('طلایی')
+        BEIGE = 'beige', _('بژ')
+        MAROON = 'maroon', _('زرشکی')
+        NAVY = 'navy', _('سرمه‌ای')
+        TEAL = 'teal', _('سبز آبی')
+        TURQUOISE = 'turquoise', _('فیروزه‌ای')
+        CYAN = 'cyan', _('آبی روشن')
+        MAGENTA = 'magenta', _('ارغوانی')
+        LIME = 'lime', _('سبز لیمویی')
+        OLIVE = 'olive', _('زیتونی')
+        INDIGO = 'indigo', _('نیلی')
+        VIOLET = 'violet', _('بنفش روشن')
+        CORAL = 'coral', _('مرجانی')
+        SALMON = 'salmon', _('صورتی سالمونی')
+        KHAKI = 'khaki', _('کاکی')
+        MINT = 'mint', _('نعنایی')
+        PEACH = 'peach', _('هلوئی')
+        IVORY = 'ivory', _('عاجی')
+        LAVENDER = 'lavender', _('اسطوخودوسی'),
 
     product = models.ForeignKey(
         'Product',
@@ -122,11 +154,15 @@ class FeatureOption(models.Model):
         max_length=1,
         choices=Feature.choices
     )
-    value = models.CharField(_("value"), max_length=155)
+    color = models.CharField(_('color'), max_length=10, choices=Color.choices, blank=True, help_text=_())
+    value = models.CharField(_('value'), max_length=55, blank=True,  help_text=_())
 
     def __str__(self):
         return f"{self.feature}: {self.value}"
-
+    def get_feature_display(self):
+        if self.feature == self.Feature.Color:
+            return 'Color'
+        return 'Size'
 
 class ProductSpecification(models.Model):
     """
@@ -277,7 +313,7 @@ class Discount(models.Model):
         start_date (datetime): When the discount becomes active.
         expire_date (datetime): When the discount expires.
     """
-    value = models.DecimalField(_("value"), max_digits=10, decimal_places=0, max_length=100)
+    value = models.DecimalField(_("value"), max_digits=10, decimal_places=0)
     is_active = models.BooleanField(_("is active"), default=True)
     start_date = models.DateTimeField(_("start date"), null=True, blank=True)
     expire_date = models.DateTimeField(_("expire date"), null=True, blank=True)
