@@ -154,11 +154,22 @@ class FeatureOption(models.Model):
         max_length=1,
         choices=Feature.choices
     )
-    color = models.CharField(_('color'), max_length=10, choices=Color.choices, blank=True, help_text=_())
-    value = models.CharField(_('value'), max_length=55, blank=True,  help_text=_())
+    color = models.CharField(
+        _('color'), max_length=10,
+        choices=Color.choices,
+        blank=True,
+        help_text=_('If this feature is a color, fill this field and leave the value field empty.')
+    )
+    value = models.CharField(
+        _('value'),
+        max_length=55,
+        blank=True,
+        help_text=_('If this feature is a size, fill this field and leave the color field empty.')
+    )
 
     def __str__(self):
         return f"{self.feature}: {self.value}"
+
     def get_feature_display(self):
         if self.feature == self.Feature.Color:
             return 'Color'
