@@ -90,6 +90,7 @@ DATABASES = {
         'HOST': env("DB_HOST"),
         'USER': env("DB_USERNAME"),
         'PASSWORD': env("DB_PASSWORD"),
+        'PORT': env("DB_PORT", default='3306'),
     }
 }
 
