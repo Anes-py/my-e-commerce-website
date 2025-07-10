@@ -38,9 +38,6 @@ class HomePageView(generic.TemplateView):
         })
 
 
-
-
-
 class ProductListView(generic.ListView):
     template_name = 'products/products_list.html'
     paginate_by = 32
