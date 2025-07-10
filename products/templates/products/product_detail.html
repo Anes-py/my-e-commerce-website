@@ -190,7 +190,7 @@
                         class="cursor-pointer rounded-lg border p-1"
                       >
                         <img
-                          src="assets/images/products/p4.png"
+                          src="{{ product.main_image }}"
                           alt=""
                           class="h-16 w-16 xl:h-20 xl:w-20"
                           loading="lazy"
@@ -228,18 +228,17 @@
                   </div>
                   <!-- Main Title ( persian ) -->
                   <h1 class="mb-4 text-lg font-semibold">
-                    کفش پیاده روی مردانه نیو بالانس مدل Mdrftlm2
+                      {{ product.name }}
                   </h1>
 
                   <div class="grid flex-grow grid-cols-2 gap-x-4">
                     <!-- right side -->
                     <div class="col-span-1">
-                      <!-- Title ( english) -->
                       <div class="mb-4 flex items-center gap-x-2">
                         <h2
                           class="line-clamp-1 text-sm font-light text-text/60"
                         >
-                          New Balance Men's Walking Shoes Model Mdrftlm2
+                          {{ product.short_description|truncatewords:10 }}
                         </h2>
                         <span
                           class="h-px flex-grow bg-background dark:bg-muted/10"
@@ -250,7 +249,7 @@
                         class="mb-4 flex items-center gap-x-4 text-sm font-light text-primary"
                       >
                         <div>
-                          <a href="#"> کد کالا 6457# </a>
+                          <a href="#"> کد کالا {{ product.id }}# </a>
                         </div>
                         <span
                           class="h-4 w-px rounded-full bg-background dark:bg-muted/10"
@@ -274,20 +273,12 @@
                         <p class="mb-6 font-medium">ویژگی های محصول</p>
 
                         <ul class="space-y-4">
+                          {% for specification in product.specifications.all|slice:":5" %}
                           <li class="flex gap-x-2">
-                            <div class="min-w-fit text-text/60">جنس :</div>
-                            <div class="text-text/90">پارچه</div>
+                            <div class="min-w-fit text-text/60">{{ specification.key }} :</div>
+                            <div class="text-text/90">{{ specification.value }}</div>
                           </li>
-                          <li class="flex gap-x-2">
-                            <div class="min-w-fit text-text/60">جنس زیره :</div>
-                            <div class="text-text/90">لاستیک</div>
-                          </li>
-                          <li class="flex gap-x-2">
-                            <div class="min-w-fit text-text/60">
-                              نحوه بسته شدن کفش :
-                            </div>
-                            <div class="text-text/90">بندی</div>
-                          </li>
+                          {% endfor %}
                         </ul>
                       </div>
                     </div>
@@ -298,189 +289,72 @@
                         <!-- variant -->
                         <div class="mb-6 space-y-6">
                           <!-- Color -->
+                          {% if color_options %}
                           <div>
                             <div class="mb-4">انتخاب رنگ</div>
                             <fieldset class="flex flex-wrap items-center gap-1">
                               <legend class="sr-only">Color</legend>
-
+                          {% for option in color_options %}
                               <div>
                                 <input
                                   checked
                                   type="radio"
                                   name="color-desktop"
-                                  value="color-desktop-1"
-                                  id="color-desktop-1"
+                                  value="{{ option.code }}"
+                                  id="color-desktop-{{ forloop.counter }}"
                                   class="peer hidden"
                                 />
 
                                 <label
-                                  for="color-desktop-1"
+                                  for="color-desktop-{{ forloop.counter }}"
                                   class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
                                 >
                                   <div class="flex items-center gap-x-2">
                                     <div
                                       class="h-6 w-6 rounded-full border-2 shadow-base dark:border-white/30"
-                                      style="background-color: black"
+                                      style="background-color: {{ option.code }}"
                                     ></div>
-                                    <p class="text-text/90">مشکی</p>
+                                    <p class="text-text/90">{{ option.name }}</p>
                                   </div>
                                 </label>
                               </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="color-desktop"
-                                  value="color-desktop-2"
-                                  id="color-desktop-2"
-                                  class="peer hidden"
-                                />
+                          {% endfor %}
 
-                                <label
-                                  for="color-desktop-2"
-                                  class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <div class="flex items-center gap-x-2">
-                                    <div
-                                      class="h-6 w-6 rounded-full border-2 shadow-base dark:border-white/30"
-                                      style="background-color: gray"
-                                    ></div>
-                                    <p class="text-text/90">طوسی</p>
-                                  </div>
-                                </label>
-                              </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="color-desktop"
-                                  value="color-desktop-3"
-                                  id="color-desktop-3"
-                                  class="peer hidden"
-                                />
-
-                                <label
-                                  for="color-desktop-3"
-                                  class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <div class="flex items-center gap-x-2">
-                                    <div
-                                      class="h-6 w-6 rounded-full border-2 shadow-base dark:border-white/30"
-                                      style="background-color: white"
-                                    ></div>
-                                    <p class="text-text/90">سفید</p>
-                                  </div>
-                                </label>
-                              </div>
                             </fieldset>
                           </div>
+                          {% endif %}
                           <!-- Size -->
+                          {% if size_options %}
                           <div>
                             <div class="mb-4">انتخاب سایز</div>
                             <fieldset class="flex flex-wrap items-center gap-2">
                               <legend class="sr-only">Size</legend>
-
+                            {% for size in size_options %}
                               <div>
                                 <input
                                   checked
                                   type="radio"
                                   name="size-desktop"
-                                  value="size-desktop-1"
-                                  id="size-desktop-1"
+                                  value="size-desktop-{{ forloop.count }}"
+                                  id="size-desktop-{{ forloop.counter }}"
                                   class="peer hidden"
                                 />
 
                                 <label
-                                  for="size-desktop-1"
+                                  for="size-desktop-{{ forloop.counter }}"
                                   class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
                                 >
                                   <p
                                     class="text-sm font-bold text-text/90 md:text-base"
                                   >
-                                    37
+                                    {{ size }}
                                   </p>
                                 </label>
                               </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="size-desktop"
-                                  value="size-desktop-2"
-                                  id="size-desktop-2"
-                                  class="peer hidden"
-                                />
-
-                                <label
-                                  for="size-desktop-2"
-                                  class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <p
-                                    class="text-sm font-bold text-text/90 md:text-base"
-                                  >
-                                    40
-                                  </p>
-                                </label>
-                              </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="size-desktop"
-                                  value="size-desktop-3"
-                                  id="size-desktop-3"
-                                  class="peer hidden"
-                                />
-
-                                <label
-                                  for="size-desktop-3"
-                                  class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <p
-                                    class="text-sm font-bold text-text/90 md:text-base"
-                                  >
-                                    44
-                                  </p>
-                                </label>
-                              </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="size-desktop"
-                                  value="size-desktop-4"
-                                  id="size-desktop-4"
-                                  class="peer hidden"
-                                />
-
-                                <label
-                                  for="size-desktop-4"
-                                  class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <p
-                                    class="text-sm font-bold text-text/90 md:text-base"
-                                  >
-                                    43
-                                  </p>
-                                </label>
-                              </div>
-                              <div>
-                                <input
-                                  type="radio"
-                                  name="size-desktop"
-                                  value="size-desktop-5"
-                                  id="size-desktop-5"
-                                  class="peer hidden"
-                                />
-
-                                <label
-                                  for="size-desktop-5"
-                                  class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                                >
-                                  <p
-                                    class="text-sm font-bold text-text/90 md:text-base"
-                                  >
-                                    42
-                                  </p>
-                                </label>
-                              </div>
+                            {% endfor %}
                             </fieldset>
                           </div>
+                          {% endif %}
                         </div>
                       </div>
                       <div>
