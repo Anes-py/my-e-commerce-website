@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.views import generic
-from .models import FeatureOption
 
 from categories.models import Category
-from .models import Product
+from .models import Product, FeatureOption
 
 
-class HomePageView(generic.View):
+class HomePageView(generic.TemplateView):
     def get(self, request, *args, **kwargs):
 
         discounted_products = Product.objects.with_discount()[:50]
@@ -71,13 +70,17 @@ class ProductDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         features_options = FeatureOption.objects.filter(product=self.object)
         context = super().get_context_data(**kwargs)
-        context['color_options'] = list(
-            features_options
-            .filter(feature=FeatureOption.Feature.Color)
-            .values_list('value', flat=True)
-            .distinct()
-        )
 
+        color_qs = features_options.filter(feature=FeatureOption.Feature.Color).distinct()
+
+        color_options = []
+        for option in color_qs:
+            color_options.append({
+                'code': option.color,
+                'name': option.get_color_display(),
+            })
+
+        context['color_options'] = color_options
         context['size_options'] = list(
             features_options
             .filter(feature=FeatureOption.Feature.Size)
