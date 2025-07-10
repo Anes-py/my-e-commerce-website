@@ -3,6 +3,7 @@ from django.conf import settings
 from django.views import generic
 
 from categories.models import Category
+from core.models import SiteSettings
 from .models import Product, FeatureOption
 
 
@@ -15,12 +16,29 @@ class HomePageView(generic.TemplateView):
 
         top_categories = Category.objects.all()[:6]  # demo ***
 
+        queryset = SiteSettings.objects.prefetch_related(
+        'slider_banners',
+        'side_banners',
+        'middle_banners',
+        ).first()
+
+
+        slider_banners = queryset.slider_banners.all()[:8]
+        side_banners = queryset.side_banners.all()[:2]
+        middle_banners = queryset.middle_banners.all()[:2]
         return render(self.request, 'products/home.html', {
             'discounted_products': discounted_products,
             'newest_products': newest_products,
             'top_categories': top_categories,
             'main_image_url_prefix': settings.MEDIA_URL,
+            'site_settings': queryset,
+            'slider_banners': slider_banners,
+            'side_banners': side_banners,
+            'middle_banners': middle_banners,
         })
+
+
+
 
 
 class ProductListView(generic.ListView):
