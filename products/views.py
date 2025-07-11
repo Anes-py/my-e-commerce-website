@@ -124,10 +124,11 @@ class ProductListView(generic.ListView):
 
 
 class ProductDetailView(generic.DetailView):
-    """Displays details of a specific product.
+    """Displays details of a specific product with its features and specifications.
 
     This class-based view renders the details of a product, including its color and size
-    options. The product is identified by its slug.
+    options, main image, specifications, and final price (with discount applied if valid).
+    The product is identified by its slug.
 
     Attributes:
         model (Model): The Product model for fetching data.
@@ -135,16 +136,24 @@ class ProductDetailView(generic.DetailView):
         slug_field (str): The slug field in the model.
         slug_url_kwarg (str): The name of the slug parameter in the URL.
     """
-    model = Product
     template_name = 'products/product_detail.html'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_context_data(self, **kwargs):
-        """Adds color and size options to the template context.
+    def get_queryset(self):
+        """Optimizes queryset by prefetching related data.
 
-        This method extracts the color and size options for the product and adds them
-        to the context.
+        Returns:
+            QuerySet: Product queryset with prefetched feature options, images, and specifications.
+        """
+        return (Product.objects.prefetch_related('feature_options', 'images', 'specifications')
+                .select_related('discount', 'category'))
+
+    def get_context_data(self, **kwargs):
+        """Adds product details, features, main image, and specifications to the template context.
+
+        This method extracts color and size options, the main product image, specifications,
+        and final price (with discount) for the product and adds them to the context.
 
         Args:
             **kwargs: Additional keyword arguments.
@@ -152,23 +161,24 @@ class ProductDetailView(generic.DetailView):
         Returns:
             dict: Context dictionary for the template.
         """
-        features_options = FeatureOption.objects.filter(product=self.object)
         context = super().get_context_data(**kwargs)
 
-        color_qs = features_options.filter(feature=FeatureOption.Feature.Color).distinct()
+        color_qs = (self.object.feature_options
+                    .filter(feature=FeatureOption.Feature.Color).distinct())
+        color_options = [
+            {'code': option.color, 'name': option.get_color_display()}
+            for option in color_qs
+        ]
 
-        color_options = []
-        for option in color_qs:
-            color_options.append({
-                'code': option.color,
-                'name': option.get_color_display(),
-            })
-
-        context['color_options'] = color_options
-        context['size_options'] = list(
-            features_options
+        size_options = list(
+            self.object.feature_options
             .filter(feature=FeatureOption.Feature.Size)
             .values_list('value', flat=True)
             .distinct()
         )
+
+        context.update({
+            'color_options': color_options,
+            'size_options': size_options,
+        })
         return context
