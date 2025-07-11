@@ -3,8 +3,9 @@ from django.dispatch import receiver
 from django.db import transaction
 
 from products.utils import custom_slugify
-from .models import Category
+from .models import Category, Brand
 
+@receiver(pre_save, sender=Brand)
 @receiver(pre_save, sender=Category)
 def slug_validator(sender, instance, **kwargs):
     """
