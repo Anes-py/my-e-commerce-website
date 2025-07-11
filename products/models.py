@@ -265,13 +265,13 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name='category-products',
+        related_name='category_products',
         verbose_name=_("category"),
     )
     brand = models.ForeignKey(
         Brand,
         on_delete=models.CASCADE,
-        related_name='brand-products',
+        related_name='brand_products',
         verbose_name=_("brand")
     )
     name = models.CharField(_("name"), max_length=255)
@@ -298,7 +298,7 @@ class Product(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='discount-products',
+        related_name='discount_products',
         verbose_name=_("discount")
     )
     created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
