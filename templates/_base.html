@@ -19,11 +19,14 @@
     <link href="{% static 'css/custom.css' %}" rel="stylesheet" />
     <link href="{% static 'css/app.css' %}" rel="stylesheet" />
 
+  {% block styles %} {% endblock %}
+
     <script src="{% static 'scripts/mount.js' %}"></script>
     <script defer src="{% static 'scripts/dependencies/flowbite.min.js' %}"></script>
     <script defer src="{% static 'scripts/dependencies/swiper.min.js' %}"></script>
     <script defer src="{% static 'scripts/app.js' %}"></script>
     <script defer src="{% static 'scripts/custom.js' %}"></script>
+  {% block scripts %} {% endblock %}
   </head>
 
   <body>
@@ -3911,7 +3914,7 @@
       </header>
         {% block page_content %} {% endblock %}
 
-             <footer class="relative border-t bg-muted">
+<footer class="relative border-t bg-muted">
         <!-- Footer Logo -->
         <div class="absolute inset-x-0 -top-3 flex items-center justify-center">
           <div class="relative flex h-10 w-14 justify-center">
@@ -4158,6 +4161,7 @@
         </div>
       </footer>
     </div>
+
   </body>
 
 <!-- Mirrored from roti-preview.taymakz.ir/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 24 Nov 2024 06:25:14 GMT -->
