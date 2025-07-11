@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.db.models import Q
 from django.views import generic
+from django.shortcuts import render
 
 from categories.models import Category
 from core.models import SiteSettings
@@ -94,9 +95,21 @@ class ProductListView(generic.ListView):
 
         category_slug = self.request.GET.get("category_slug")
         if category_slug:
-            Product.objects.by_category(category_slug=category_slug)
+            queryset = Product.objects.by_category(category_slug=category_slug)
 
-        brand_slug =
+        brand_slug = self.request.GET.get("brand_slug")
+        if brand_slug:
+            Product.objects.by_brand(brand_slug=brand_slug)
+
+        min_price = self.request.GET.get("min_price")
+        max_price = self.request.GET.get("max_price")
+        if min_price and max_price:
+            queryset = Product.objects.active().filter(
+                Q(price__gt=min_price)
+                |Q(price__lt=max_price)
+            )
+
+
 
         return queryset
 
