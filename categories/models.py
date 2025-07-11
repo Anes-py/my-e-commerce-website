@@ -44,3 +44,13 @@ class Category(models.Model):
     class Meta:
         verbose_name = _("category")
         verbose_name_plural = _("categories")
+
+
+class Brand(models.Model):
+    name = models.CharField(_("name"), max_length=155)
+    slug = models.SlugField(_("slug"), unique=True, blank=True)
+    description = models.CharField(_("description"), max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
