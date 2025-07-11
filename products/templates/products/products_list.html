@@ -102,67 +102,86 @@
                       <!-- Categories -->
 
                       <li class="relative" data-accordion-item>
-                        <div
-                          class="w-full text-right cursor-pointer"
-                          data-accordion-button
-                        >
-                          <div
-                            class="flex items-center justify-between gap-2 text-sm md:text-base"
-                          >
-                            <span> دسته بندی ها </span>
-                            <div class="min-w-fit">
-                              <svg
-                                data-accordion-chevron
-                                class="h-5 w-5 duration-300"
-                              >
-                                <use xlink:href="#chevron-left"></use>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          class="relative max-h-0 overflow-hidden transition-all duration-300"
-                          data-accordion-content
-                        >
-                          <div class="mt-4 max-h-60 overflow-y-auto pl-1">
-                            <ul class="space-y-2 rounded-lg">
-                              <li>
-                                <a
-                                  class="flex items-center gap-x-2 rounded-lg px-4 py-2"
-                                  href="#"
-                                >
-                                  <span> دسته بندی 1 </span>
-                                  <svg class="h-5 w-5">
-                                    <use xlink:href="#chevron-left" />
-                                  </svg>
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  class="flex items-center gap-x-2 rounded-lg px-4 py-2"
-                                  href="#"
-                                >
-                                  <span> دسته بندی 2 </span>
-                                  <svg class="h-5 w-5">
-                                    <use xlink:href="#chevron-left" />
-                                  </svg>
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  class="flex items-center gap-x-2 rounded-lg px-4 py-2"
-                                  href="#"
-                                >
-                                  <span> دسته بندی 3 </span>
-                                  <svg class="h-5 w-5">
-                                    <use xlink:href="#chevron-left" />
-                                  </svg>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
+  <div class="w-full text-right cursor-pointer" data-accordion-button>
+    <div class="flex items-center justify-between gap-2 text-sm md:text-base">
+      <span>دسته بندی ها</span>
+      <div class="min-w-fit">
+        <svg data-accordion-chevron class="h-5 w-5 duration-300">
+          <use xlink:href="#chevron-left"></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="relative max-h-0 overflow-hidden transition-all duration-300" data-accordion-content>
+    <div class="mt-4 max-h-60 overflow-y-auto pl-1">
+      <ul class="space-y-2 rounded-lg">
+        <!-- دسته‌بندی اصلی 1 -->
+        <li>
+          <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+            <span>دسته بندی 1</span>
+            <svg class="h-5 w-5">
+              <use xlink:href="#chevron-left" />
+            </svg>
+          </a>
+          <ul class="ml-4 space-y-2 mt-2">
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 1-1</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 1-2</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- دسته‌بندی اصلی 2 -->
+        <li>
+          <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+            <span>دسته بندی 2</span>
+            <svg class="h-5 w-5">
+              <use xlink:href="#chevron-left" />
+            </svg>
+          </a>
+          <ul class="ml-4 space-y-2 mt-2">
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 2-1</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 2-2</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- دسته‌بندی اصلی 3 -->
+        <li>
+          <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+            <span>دسته بندی 3</span>
+            <svg class="h-5 w-5">
+              <use xlink:href="#chevron-left" />
+            </svg>
+          </a>
+          <ul class="ml-4 space-y-2 mt-2">
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 3-1</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-x-2 rounded-lg px-4 py-2" href="#">
+                <span>زیرمجموعه 3-2</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</li>
                       <!-- brands -->
 
                       <li class="relative" data-accordion-item>
@@ -237,94 +256,6 @@
                                   >
                                     <span>آدیداس</span>
                                     <span>adidas</span>
-                                  </label>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- colors -->
-
-                      <li class="relative" data-accordion-item>
-                        <div
-                          class="w-full text-right cursor-pointer"
-                          data-accordion-button
-                        >
-                          <div
-                            class="flex items-center justify-between gap-2 text-sm md:text-base"
-                          >
-                            <span> رنگ ها </span>
-                            <div class="min-w-fit">
-                              <svg
-                                data-accordion-chevron
-                                class="h-5 w-5 duration-300"
-                              >
-                                <use xlink:href="#chevron-left"></use>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          class="relative max-h-0 overflow-hidden transition-all duration-300"
-                          data-accordion-content
-                        >
-                          <div class="mt-4 max-h-60 overflow-y-auto pl-1">
-                            <ul
-                              class="space-y-2 rounded-lg"
-                              id="colorListFilterDesktop"
-                            >
-                              <li class="p-2">
-                                <label class="sr-only">Color search</label>
-                                <input
-                                  id="colorListFilterDesktopSearchInput"
-                                  class="w-full rounded-lg border border-none bg-background px-2 py-3 text-text/90 outline-none placeholder:text-sm placeholder:text-text/60 focus:ring-0 placeholder:"
-                                  placeholder="جستجوی رنگ ..."
-                                  type="text"
-                                />
-                              </li>
-                              <li>
-                                <div
-                                  class="flex w-full items-center gap-x-2 pr-4"
-                                >
-                                  <input
-                                    id="color-red"
-                                    type="checkbox"
-                                    value=""
-                                    class="h-4 w-4 cursor-pointer rounded-xl bg-background dark:border-gray-600 dark:bg-zinc-700"
-                                  />
-                                  <label
-                                    for="color-red"
-                                    class="flex w-full cursor-pointer items-center justify-between py-2 pl-4 font-medium text-text/90"
-                                  >
-                                    <span>قرمز</span>
-                                    <span
-                                      class="h-4 w-4 rounded-full ring-2 ring-gray-200 dark:ring-zinc-700"
-                                      style="background: red"
-                                    ></span>
-                                  </label>
-                                </div>
-                              </li>
-                              <li>
-                                <div
-                                  class="flex w-full items-center gap-x-2 pr-4"
-                                >
-                                  <input
-                                    id="color-blue"
-                                    type="checkbox"
-                                    value=""
-                                    class="h-4 w-4 cursor-pointer rounded-xl bg-background dark:border-gray-600 dark:bg-zinc-700"
-                                  />
-                                  <label
-                                    for="color-blue"
-                                    class="flex w-full cursor-pointer items-center justify-between py-2 pl-4 font-medium text-text/90"
-                                  >
-                                    <span>آبی</span>
-                                    <span
-                                      class="h-4 w-4 rounded-full ring-2 ring-gray-200 dark:ring-zinc-700"
-                                      style="background: blue"
-                                    ></span>
                                   </label>
                                 </div>
                               </li>

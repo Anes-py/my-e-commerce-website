@@ -77,19 +77,26 @@ class ProductListView(generic.ListView):
         """
         queryset = Product.objects.newest()
         search_query = self.request.GET.get('q')
-        filter_query = self.request.GET.get('f')
+        sort_query = self.request.GET.get('f')
+
 
         if search_query:
             queryset = Product.objects.search(search_query)
 
-        filter_map = {
+        sort_map = {
             'newest': Product.objects.newest(),
             'discounted': Product.objects.with_discount(),
             'most_expensive': Product.objects.most_expensive(),
             'cheapest': Product.objects.cheapest(),
         }
-        if filter_query in filter_map:
-            queryset = filter_map[filter_query]
+        if sort_query in sort_map:
+            queryset = sort_map[sort_query]
+
+        category_slug = self.request.GET.get("category_slug")
+        if category_slug:
+            Product.objects.by_category(category_slug=category_slug)
+
+        brand_slug =
 
         return queryset
 

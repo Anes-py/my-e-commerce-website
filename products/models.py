@@ -4,7 +4,7 @@ from django.utils.text import gettext_lazy as _
 from django.utils import timezone
 from django.db.models import Subquery, OuterRef
 
-from categories.models import Category
+from categories.models import Category, Brand
 
 
 class ProductManager(models.Manager):
@@ -64,6 +64,28 @@ class ProductManager(models.Manager):
                 QuerySet: Products in the specified category.
         """
         return self.active().filter(category__slug=category_slug).select_related('category')
+
+    def by_brand(self, brand_slug):
+        """Filters products by a specific brand using its slug.
+
+        This method retrieves products associated with the given brand slug from the
+        active products queryset. It assumes the `active()` method is called first
+        to ensure only available products are considered.
+
+        Args:
+            brand_slug (str): The slug of the brand to filter by.
+
+        Returns:
+            QuerySet: A queryset of active products filtered by the specified brand slug.
+
+        Raises:
+            ObjectDoesNotExist: If no brand with the given slug exists (handled by Django's ORM).
+
+        Example:
+            >>> Product.objects.by_brand('nike')
+            <QuerySet [<Product: Nike Shoe>, <Product: Nike Jacket>]>
+        """
+        return self.active().filter(brand__slug=brand_slug)
 
     def search(self, query):
         """
@@ -175,6 +197,7 @@ class FeatureOption(models.Model):
             return 'Color'
         return 'Size'
 
+
 class ProductSpecification(models.Model):
     """
     Represents a key-value specification for a product.
@@ -244,6 +267,12 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name='products',
         verbose_name=_("category"),
+    )
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name=_("brand")
     )
     name = models.CharField(_("name"), max_length=255)
     slug = models.SlugField(
