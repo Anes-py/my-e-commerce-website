@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.conf import settings
 from django.views import generic
 
 from categories.models import Category
@@ -48,8 +47,6 @@ class HomePageView(generic.TemplateView):
             'discounted_products': discounted_products,
             'newest_products': newest_products,
             'top_categories': top_categories,
-            'main_image_url_prefix': settings.MEDIA_URL,
-            'site_settings': queryset,
             'slider_banners': slider_banners,
             'side_banners': side_banners,
             'middle_banners': middle_banners,
@@ -118,7 +115,6 @@ class ProductListView(generic.ListView):
         querydict.pop('page', None)
         querystring = querydict.urlencode()
 
-        context['main_image_url_prefix'] = settings.MEDIA_URL
         context['querystring'] = querystring
         return context
 
