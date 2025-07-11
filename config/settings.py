@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core',
     'categories',
     'products',
+    'cart',
 
     # third party apps
     'debug_toolbar',
