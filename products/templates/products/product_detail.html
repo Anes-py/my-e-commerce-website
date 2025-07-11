@@ -144,8 +144,8 @@
                     <!-- Main image -->
                     <div>
                       <img
-                        src="assets/images/products/p1.png"
-                        alt=""
+                        src="{{ main_image_url_prefix }}{{ product.main_image }}"
+                        alt="{{ product.name }}"
                         class="mx-auto"
                         loading="lazy"
                       />
@@ -153,6 +153,7 @@
                     <!-- Gallery -->
                     <div class="flex items-center justify-center gap-x-2">
                       <!-- image -->
+                      {% for image in product.images.all|slice:":4" %}
                       <button
                         type="button"
                         data-modal-target="product-gallery-modal"
@@ -160,44 +161,14 @@
                         class="cursor-pointer rounded-lg border p-1"
                       >
                         <img
-                          src="assets/images/products/p2.png"
+                          src="{{ image.image.url }}"
                           alt=""
                           class="h-16 w-16 xl:h-20 xl:w-20"
                           loading="lazy"
                         />
                       </button>
+                      {% endfor %}
 
-                      <!-- image -->
-                      <button
-                        type="button"
-                        data-modal-target="product-gallery-modal"
-                        data-modal-toggle="product-gallery-modal"
-                        class="cursor-pointer rounded-lg border p-1"
-                      >
-                        <img
-                          src="assets/images/products/p3.png"
-                          alt=""
-                          class="h-16 w-16 xl:h-20 xl:w-20"
-                          loading="lazy"
-                        />
-                      </button>
-
-                      <!-- image -->
-                      <button
-                        type="button"
-                        data-modal-target="product-gallery-modal"
-                        data-modal-toggle="product-gallery-modal"
-                        class="cursor-pointer rounded-lg border p-1"
-                      >
-                        <img
-                          src="{{ product.main_image }}"
-                          alt=""
-                          class="h-16 w-16 xl:h-20 xl:w-20"
-                          loading="lazy"
-                        />
-                      </button>
-
-                      <!-- Load more -->
                       <button
                         type="button"
                         data-modal-target="product-gallery-modal"
@@ -205,7 +176,7 @@
                         class="relative cursor-pointer rounded-lg border p-1"
                       >
                         <img
-                          src="assets/images/products/p5.png"
+                          src="{{ product.images.last.image.url }}"
                           alt=""
                           class="h-16 w-16 blur xl:h-20 xl:w-20"
                           loading="lazy"
@@ -2181,30 +2152,16 @@
                 <div class="border-b p-6">
                   <div class="swiper product-image-desktop-swiper">
                     <div class="swiper-wrapper">
+                      {% for image in product.images.all %}
                       <div class="swiper-slide">
                         <img
-                          src="assets/images/products/p1.png"
+                          src="{{ image.image.url }}"
                           alt=""
                           class="mx-auto min-h-[500px] min-w-[500px]"
                           loading="lazy"
                         />
                       </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="assets/images/products/p2.png"
-                          alt=""
-                          class="mx-auto min-h-[500px] min-w-[500px]"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="assets/images/products/p3.png"
-                          alt=""
-                          class="mx-auto min-h-[500px] min-w-[500px]"
-                          loading="lazy"
-                        />
-                      </div>
+                      {% endfor %}
                     </div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next hidden md:flex"></div>
@@ -2214,31 +2171,16 @@
                 <div class="p-6">
                   <div class="swiper product-image-desktop-2-swiper">
                     <div class="swiper-wrapper justify-center">
+                    {% for image in product.images.all %}
                       <div class="swiper-slide rounded-lg border">
                         <img
-                          src="assets/images/products/p1.png"
+                          src="{{ image.image.url }}"
                           alt=""
                           class="mx-auto h-25 w-25"
                           loading="lazy"
                         />
                       </div>
-
-                      <div class="swiper-slide rounded-lg border">
-                        <img
-                          src="assets/images/products/p2.png"
-                          alt=""
-                          class="mx-auto h-25 w-25"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div class="swiper-slide rounded-lg border">
-                        <img
-                          src="assets/images/products/p3.png"
-                          alt=""
-                          class="mx-auto h-25 w-25"
-                          loading="lazy"
-                        />
-                      </div>
+                    {% endfor %}
                     </div>
                     <div class="swiper-button-next hidden md:flex"></div>
                     <div class="swiper-button-prev hidden md:flex"></div>
