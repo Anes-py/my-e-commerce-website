@@ -142,7 +142,7 @@ class ProductDetailView(generic.DetailView):
         Returns:
             QuerySet: Product queryset with prefetched feature options, images, and specifications.
         """
-        return (Product.objects.prefetch_related('feature_options', 'images', 'specifications')
+        return (Product.objects.active().prefetch_related('feature_options', 'images', 'specifications')
                 .select_related('discount', 'category'))
 
     def get_context_data(self, **kwargs):
