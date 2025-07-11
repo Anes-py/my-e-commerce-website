@@ -1,14 +1,4 @@
-# Ignore all HTML files in templates directory to reduce HTML percentage
-templates/*.html linguist-vendored
-templates/**/*.html linguist-vendored
-
-# Ensure Python files are counted
 *.py linguist-detectable=true
-
-# Optionally, ignore JavaScript and CSS files if they are not central to your project
-*.js linguist-vendored
-*.css linguist-vendored
-
-# Ignore other generated or vendored files (if applicable)
-static/**/*.css linguist-vendored
-static/**/*.js linguist-vendored
+*.html linguist-detectable=false
+*.js linguist-detectable=true
+*.css linguist-detectable=true
