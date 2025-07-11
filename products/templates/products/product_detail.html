@@ -578,139 +578,64 @@
               <!-- variant -->
               <div class="mb-6 space-y-4">
                 <!-- Color -->
+                {% if color_options %}
                 <div class="text-sm md:text-base">انتخاب رنگ</div>
                 <fieldset class="flex flex-wrap items-center gap-1">
                   <legend class="sr-only">Color</legend>
-
+                {% for option in color_options %}
                   <div>
                     <input
                       checked
                       type="radio"
                       name="color"
-                      value="color-1"
-                      id="color-1"
+                      value="color-{{ option.code }}"
+                      id="color-{{ forloop.counter }}"
                       class="peer hidden"
                     />
 
                     <label
-                      for="color-1"
+                      for="color-{{ forloop.counter }}"
                       class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
                     >
                       <div class="flex items-center gap-x-2">
                         <div
                           class="h-5 w-5 rounded-full border-2 shadow-base dark:border-white/30"
-                          style="background-color: black"
+                          style="background-color: {{ option.code }}"
                         ></div>
-                        <p class="text-sm text-text/90 md:text-base">مشکی</p>
+                        <p class="text-sm text-text/90 md:text-base">{{ option.name }}</p>
                       </div>
                     </label>
                   </div>
-                  <div>
-                    <input
-                      type="radio"
-                      name="color"
-                      value="color-2"
-                      id="color-2"
-                      class="peer hidden"
-                    />
-
-                    <label
-                      for="color-2"
-                      class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                    >
-                      <div class="flex items-center gap-x-2">
-                        <div
-                          class="h-5 w-5 rounded-full border-2 shadow-base dark:border-white/30"
-                          style="background-color: gray"
-                        ></div>
-                        <p class="text-sm text-text/90 md:text-base">طوسی</p>
-                      </div>
-                    </label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      name="color"
-                      value="color-3"
-                      id="color-3"
-                      class="peer hidden"
-                    />
-
-                    <label
-                      for="color-3"
-                      class="relative block cursor-pointer rounded-full border-2 p-2 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                    >
-                      <div class="flex items-center gap-x-2">
-                        <div
-                          class="h-5 w-5 rounded-full border-2 shadow-base dark:border-white/30"
-                          style="background-color: white"
-                        ></div>
-                        <p class="text-sm text-text/90 md:text-base">سفید</p>
-                      </div>
-                    </label>
-                  </div>
+                {% endfor %}
+                {% endif %}
                 </fieldset>
                 <!-- Size -->
-
+                {% if size_options %}
                 <div class="mb-4 text-sm md:text-base">انتخاب سایز</div>
                 <fieldset class="mb-4 flex flex-wrap items-center gap-2">
                   <legend class="sr-only">Size</legend>
-
+                  {% for size in size_options %}
                   <div>
                     <input
                       checked
                       type="radio"
                       name="size-mobile"
-                      value="size-mobile-1"
-                      id="size-mobile-1"
+                      value="size-{{ size }}"
+                      id="size-mobile-{{ forloop.counter }}"
                       class="peer hidden"
                     />
 
                     <label
-                      for="size-mobile-1"
+                      for="size-mobile-{{ forloop.counter }}"
                       class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
                     >
                       <p class="text-sm font-bold text-text/90 md:text-base">
-                        37
+                        {{ size }}
                       </p>
                     </label>
                   </div>
-                  <div>
-                    <input
-                      type="radio"
-                      name="size-mobile"
-                      value="size-mobile-2"
-                      id="size-mobile-2"
-                      class="peer hidden"
-                    />
-
-                    <label
-                      for="size-mobile-2"
-                      class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                    >
-                      <p class="text-sm font-bold text-text/90 md:text-base">
-                        40
-                      </p>
-                    </label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      name="size-mobile"
-                      value="size-mobile-3"
-                      id="size-mobile-3"
-                      class="peer hidden"
-                    />
-
-                    <label
-                      for="size-mobile-3"
-                      class="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 p-1 shadow-base peer-checked:border-emerald-500 hover:border-border/50 peer-checked:dark:border-emerald-400 dark:hover:border-white/10"
-                    >
-                      <p class="text-sm font-bold text-text/90 md:text-base">
-                        44
-                      </p>
-                    </label>
-                  </div>
+                  {% endfor %}
+                {% endif %}
                 </fieldset>
 
                 <!-- Quantity -->
@@ -736,6 +661,7 @@
                   </button>
                 </div>
               </div>
+
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div
                   class="flex items-center gap-x-2 rounded-lg border px-4 py-3 text-sm text-text/60"
