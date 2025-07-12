@@ -1,8 +1,8 @@
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Subquery, OuterRef
 from django.utils.text import gettext_lazy as _
 from django.utils import timezone
-from django.db.models import Subquery, OuterRef
+from django.shortcuts import reverse
 
 from categories.models import Category, Brand
 
@@ -337,6 +337,9 @@ class Product(models.Model):
         if self.discount and self.discount.is_valid():
             return int(self.discount.apply_discount(final_price))
         return int(final_price)
+
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[self.slug])
 
     objects = ProductManager()
 
