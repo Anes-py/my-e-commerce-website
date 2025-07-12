@@ -6,57 +6,28 @@ from core.models import SiteSettings
 from .models import Product, FeatureOption
 
 
-class HomePageView(generic.TemplateView):
-    """Renders the homepage with discounted products, new products, and banners.
+class HomeView(generic.TemplateView):
+    template_name = 'products/home.html'
 
-    This class-based view renders the site's homepage, providing data such as discounted
-    products, newest products, top categories, and promotional banners to the template.
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    Attributes:
-        template_name (str): The name of the default template (implicitly used in the get method).
-    """
-    def get(self, request, *args, **kwargs):
-        """Fetches and renders homepage data.
-
-        This method retrieves discounted products, newest products, top categories, and
-        promotional banners (slider, side, and middle) from the database and passes them
-        to the template.
-
-        Args:
-            request (HttpRequest): The incoming HTTP request.
-            *args: Additional positional arguments.
-            **kwargs: Additional keyword arguments.
-
-        Returns:
-            HttpResponse: Rendered response with the 'products/home.html' template and required data.
-        """
-        discounted_products = Product.objects.with_discount()[:50]
-        newest_products = Product.objects.newest()[:50]
-        top_categories = Category.objects.all()[:6]  # demo ***
-
-        site_settings_qs = SiteSettings.objects.prefetch_related(
-            'slider_banners',
-            'side_banners',
-            'middle_banners',
-        ).first()
+        site_settings_qs = SiteSettings.objects.first()
 
         if site_settings_qs:
-            slider_banners = site_settings_qs.slider_banners.all()[:8]
-            side_banners = site_settings_qs.side_banners.all()[:2]
-            middle_banners = site_settings_qs.middle_banners.all()[:2]
+            context['slider_banners'] = site_settings_qs.slider_banners.all()[:8]
+            context['side_banners'] = site_settings_qs.side_banners.all()[:2]
+            context['middle_banners'] = site_settings_qs.middle_banners.all()[:2]
         else:
-            slider_banners = []
-            side_banners = []
-            middle_banners = []
+            context['slider_banners'] = []
+            context['side_banners'] = []
+            context['middle_banners'] = []
 
-        return render(self.request, 'products/home.html', {
-            'discounted_products': discounted_products,
-            'newest_products': newest_products,
-            'top_categories': top_categories,
-            'slider_banners': slider_banners,
-            'side_banners': side_banners,
-            'middle_banners': middle_banners,
-        })
+        context['discounted_products'] = Product.objects.filter(is_discounted=True)[:12]
+        context['newest_products'] = Product.objects.order_by('-created_at')[:12]
+        context['top_categories'] = Category.objects.filter(is_top=True)
+
+        return context
 
 
 class ProductListView(generic.ListView):
