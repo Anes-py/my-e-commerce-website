@@ -272,7 +272,9 @@ class Product(models.Model):
         Brand,
         on_delete=models.CASCADE,
         related_name='brand_products',
-        verbose_name=_("brand")
+        verbose_name=_("brand"),
+        null=True,
+        blank=True,
     )
     name = models.CharField(_("name"), max_length=255)
     slug = models.SlugField(

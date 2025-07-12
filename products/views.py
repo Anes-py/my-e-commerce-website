@@ -1,8 +1,7 @@
-from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render
 
-from categories.models import Category
+from categories.models import Category, Brand
 from core.models import SiteSettings
 from .models import Product, FeatureOption
 
@@ -44,6 +43,7 @@ class HomePageView(generic.TemplateView):
         slider_banners = queryset.slider_banners.all()[:8]
         side_banners = queryset.side_banners.all()[:2]
         middle_banners = queryset.middle_banners.all()[:2]
+
         return render(self.request, 'products/home.html', {
             'discounted_products': discounted_products,
             'newest_products': newest_products,
@@ -80,7 +80,6 @@ class ProductListView(generic.ListView):
         search_query = self.request.GET.get('q')
         sort_query = self.request.GET.get('f')
 
-
         if search_query:
             queryset = Product.objects.search(search_query)
 
@@ -97,19 +96,16 @@ class ProductListView(generic.ListView):
         if category_slug:
             queryset = Product.objects.by_category(category_slug=category_slug)
 
-        brand_slug = self.request.GET.get("brand_slug")
-        if brand_slug:
-            Product.objects.by_brand(brand_slug=brand_slug)
+        brand_slugs = self.request.GET.getlist("brand_slug")
+        if brand_slugs:
+            queryset = queryset.filter(brand__slug__in=brand_slugs)  #
 
         min_price = self.request.GET.get("min_price")
         max_price = self.request.GET.get("max_price")
         if min_price and max_price:
             queryset = Product.objects.active().filter(
-                Q(price__gt=min_price)
-                |Q(price__lt=max_price)
+                price__gte=min_price, price__lte=max_price,
             )
-
-
 
         return queryset
 
@@ -134,8 +130,10 @@ class ProductListView(generic.ListView):
                 del querydict[key]
         querydict.pop('page', None)
         querystring = querydict.urlencode()
-
         context['querystring'] = querystring
+        context['categories'] = Category.objects.prefetch_related("children").filter(parent__isnull=True)
+        context['brands'] = Brand.objects.all()
+        context['selected_brands'] = self.request.GET.getlist('brand_slug')
         return context
 
 
