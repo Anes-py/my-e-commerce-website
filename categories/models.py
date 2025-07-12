@@ -23,6 +23,7 @@ class Category(models.Model):
         null=True,
         blank=True,
         verbose_name=_("parent"),
+
     )
     name = models.CharField(_("name"), max_length=155)
     slug = models.SlugField(
@@ -48,7 +49,14 @@ class Category(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(_("name"), max_length=155)
-    slug = models.SlugField(_("slug"), unique=True, blank=True)
+    slug = models.SlugField(
+        _("slug"),
+        unique=True,
+        blank=True,
+        help_text=_(
+            'It is preferable to leave this field blank so that it will be filled in automatically.'
+            )
+    )
     description = models.CharField(_("description"), max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
