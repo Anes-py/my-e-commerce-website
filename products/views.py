@@ -34,15 +34,20 @@ class HomePageView(generic.TemplateView):
         newest_products = Product.objects.newest()[:50]
         top_categories = Category.objects.all()[:6]  # demo ***
 
-        queryset = SiteSettings.objects.prefetch_related(
+        site_settings_qs = SiteSettings.objects.prefetch_related(
             'slider_banners',
             'side_banners',
             'middle_banners',
         ).first()
 
-        slider_banners = queryset.slider_banners.all()[:8]
-        side_banners = queryset.side_banners.all()[:2]
-        middle_banners = queryset.middle_banners.all()[:2]
+        if site_settings_qs:
+            slider_banners = site_settings_qs.slider_banners.all()[:8]
+            side_banners = site_settings_qs.side_banners.all()[:2]
+            middle_banners = site_settings_qs.middle_banners.all()[:2]
+        else:
+            slider_banners = []
+            side_banners = []
+            middle_banners = []
 
         return render(self.request, 'products/home.html', {
             'discounted_products': discounted_products,
