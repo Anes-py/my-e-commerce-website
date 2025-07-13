@@ -1,5 +1,4 @@
 from django.views import generic
-from django.shortcuts import render
 
 from categories.models import Category, Brand
 from core.models import SiteSettings
@@ -23,9 +22,9 @@ class HomeView(generic.TemplateView):
             context['side_banners'] = []
             context['middle_banners'] = []
 
-        context['discounted_products'] = Product.objects.filter(is_discounted=True)[:12]
-        context['newest_products'] = Product.objects.order_by('-created_at')[:12]
-        context['top_categories'] = Category.objects.filter(is_top=True)
+        context['discounted_products'] = Product.objects.with_discount()
+        context['newest_products'] = Product.objects.newest()
+        context['top_categories'] = Category.objects.all()[:6]
 
         return context
 
