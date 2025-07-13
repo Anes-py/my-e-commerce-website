@@ -39,7 +39,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_max_show_all = 30
     list_editable = ['status', 'is_active']
     list_filter = ['status', 'is_active', 'category']
-    autocomplete_fields = ['category']
+    autocomplete_fields = ['category', 'brand']
     search_fields = ['name', 'short_description']
 
     inlines = [
