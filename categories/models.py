@@ -28,6 +28,7 @@ class Category(models.Model):
     name = models.CharField(_("name"), max_length=155)
     slug = models.SlugField(
         _("slug"),
+        max_length=255,
         unique=True,
         blank=True,
         allow_unicode=True,
@@ -51,6 +52,7 @@ class Brand(models.Model):
     name = models.CharField(_("name"), max_length=155)
     slug = models.SlugField(
         _("slug"),
+        max_length=255,
         unique=True,
         blank=True,
         help_text=_(
