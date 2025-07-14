@@ -9,7 +9,7 @@ def site_settings(request):
     return {
         'site_settings': queryset,
         'main_image_url_prefix': settings.MEDIA_URL,
-        'categories': Category.objects.filter(parent__isnull=True),
+        'categories': Category.objects.filter(parent__isnull=True).prefetch_related("parent"),
         'brands' : Category.objects.all(),
     }
 
