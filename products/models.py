@@ -7,6 +7,16 @@ from django.shortcuts import reverse
 from categories.models import Category, Brand
 
 
+def get_all_category(category):
+    """
+    :param category: category object
+    :return: category+ all children and grand chilren
+    """
+    subs = [category]
+    for category in category.children.all():
+        subs += get_all_category(category)
+    return subs
+
 class ProductManager(models.Manager):
     """
     Custom manager for Product model, providing commonly used queryset filters.
@@ -63,7 +73,13 @@ class ProductManager(models.Manager):
         Returns:
                 QuerySet: Products in the specified category.
         """
-        return self.active().filter(category__slug=category_slug).select_related('category')
+
+        try:
+            category = Category.objects.get(slug=category_slug)
+        except Category.DoesNotExist:
+            return self.none()
+        subcategories = get_all_category(category)
+        return self.active().filter(category__in=subcategories).select_related('category')
 
     def by_brand(self, brand_slug):
         """Filters products by a specific brand using its slug.
