@@ -1665,7 +1665,7 @@
           {% for category in categories %}
           <li>
             <a
-              href="#"
+              href="{% url 'product-list' %}?category_slug={{ category.slug }}"
               class="flex py-4 pr-4"
               data-child-id="child-{{ forloop.counter }}"
             >
