@@ -283,7 +283,7 @@
             >
               <!-- Category -->
             {% for category in top_categories %}
-              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='shop.html'>
+              <a class='relative flex w-25 flex-col items-center justify-between gap-y-1.5 sm:w-auto sm:gap-y-2.5' href='{% url "product-list" %}?category_slug={{ category.slug }}'>
                 <div
                   class="border-gradient group relative rounded-full p-px before:absolute before:-inset-px before:h-[calc(100%+2px)] before:w-[calc(100%+2px)] before:rounded-full"
                 >
@@ -311,7 +311,7 @@
               <h3 class="font-medium md:text-lg lg:text-xl">
                 پرفروش ترین محصولات
               </h3>
-              <a class='flex items-center gap-x-2 py-2 text-sm text-primary lg:text-base' href='shop.html'>
+              <a class='flex items-center gap-x-2 py-2 text-sm text-primary lg:text-base' href='{% url "product-list" %}'>
                 مشاهده همه
                 <span>
                   <svg class="h-5 w-5 lg:h-6 lg:w-6">
