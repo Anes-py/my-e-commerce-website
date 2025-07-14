@@ -24,7 +24,7 @@ class HomeView(generic.TemplateView):
 
         context['discounted_products'] = Product.objects.with_discount()
         context['newest_products'] = Product.objects.newest()
-        context['top_categories'] = Category.objects.all()[:6]
+        context['top_categories'] = Category.objects.filter(parent__isnull=True)[:6] # demo
 
         return context
 
@@ -73,14 +73,23 @@ class ProductListView(generic.ListView):
 
         brand_slugs = self.request.GET.getlist("brand_slug")
         if brand_slugs:
-            queryset = queryset.filter(brand__slug__in=brand_slugs)  #
+            queryset = queryset.filter(brand__slug__in=brand_slugs)
 
         min_price = self.request.GET.get("min_price")
         max_price = self.request.GET.get("max_price")
-        if min_price and max_price:
-            queryset = Product.objects.active().filter(
-                price__gte=min_price, price__lte=max_price,
-            )
+
+        try:
+            min_price = int(min_price)
+        except (TypeError, ValueError):
+            min_price = None
+        try: max_price = int(max_price)
+        except (TypeError, ValueError):
+            max_price = None
+
+        if min_price is not None:
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price is not None:
+            queryset = queryset.filter(price__lte=max_price)
 
         return queryset
 
@@ -109,6 +118,7 @@ class ProductListView(generic.ListView):
         context['categories'] = Category.objects.prefetch_related("children").filter(parent__isnull=True)
         context['brands'] = Brand.objects.all()
         context['selected_brands'] = self.request.GET.getlist('brand_slug')
+        context['selected_categories'] = self.request.GET.getlist('categories')
         return context
 
 
