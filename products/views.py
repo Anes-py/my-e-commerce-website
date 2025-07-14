@@ -1,5 +1,4 @@
 from django.views import generic
-
 from categories.models import Category, Brand
 from core.models import SiteSettings
 from .models import Product, FeatureOption
@@ -24,7 +23,8 @@ class HomeView(generic.TemplateView):
 
         context['discounted_products'] = Product.objects.with_discount()
         context['newest_products'] = Product.objects.newest()
-        context['top_categories'] = Category.objects.filter(parent__isnull=True)[:6] # demo
+        context['top_categories'] = Category.objects.prefetch_related("children")\
+        .select_related("parent").filter(parent__isnull=True)[:6] # demo
 
         return context
 
@@ -115,7 +115,6 @@ class ProductListView(generic.ListView):
         querydict.pop('page', None)
         querystring = querydict.urlencode()
         context['querystring'] = querystring
-        context['categories'] = Category.objects.prefetch_related("children").filter(parent__isnull=True)
         context['brands'] = Brand.objects.all()
         context['selected_brands'] = self.request.GET.getlist('brand_slug')
         context['selected_categories'] = self.request.GET.getlist('categories')
