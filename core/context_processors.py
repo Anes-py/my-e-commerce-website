@@ -1,6 +1,7 @@
+from django.db.models import Prefetch
 from django.conf import settings
 
-from categories.models import Category
+from categories.models import Category, Brand
 from .models import SiteSettings
 
 
@@ -9,7 +10,11 @@ def site_settings(request):
     return {
         'site_settings': queryset,
         'main_image_url_prefix': settings.MEDIA_URL,
-        'categories': Category.objects.filter(parent__isnull=True).prefetch_related("parent"),
-        'brands' : Category.objects.all(),
+        'categories': Category.objects.prefetch_related(
+            Prefetch(
+                "children",
+                Category.objects.prefetch_related("children")
+            )
+        ),
+        'brands' : Brand.objects.all(),
     }
-
