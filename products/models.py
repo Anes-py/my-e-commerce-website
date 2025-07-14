@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, Subquery, OuterRef
+from django.db.models import Q, Subquery, OuterRef, Prefetch
 from django.utils.text import gettext_lazy as _
 from django.utils import timezone
 from django.shortcuts import reverse
@@ -75,11 +75,12 @@ class ProductManager(models.Manager):
         """
 
         try:
-            category = Category.objects.get(slug=category_slug)
+            category = Category.objects.prefetch_related("children")
         except Category.DoesNotExist:
             return self.none()
         subcategories = get_all_category(category)
-        return self.active().filter(category__in=subcategories).select_related('category')
+        return self.active().filter(category__in=subcategories)
+
 
     def by_brand(self, brand_slug):
         """Filters products by a specific brand using its slug.
