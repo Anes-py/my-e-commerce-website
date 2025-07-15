@@ -15,6 +15,6 @@ def site_settings(request):
                 "children",
                 Category.objects.prefetch_related("children")
             )
-        ),
+        ).filter(parent__isnull=True),
         'brands' : Brand.objects.all(),
     }
