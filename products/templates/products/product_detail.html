@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 
+{% load humanize %}
 {% block page_title %} {{ product.name }} {% endblock %}
 
 
@@ -255,6 +256,8 @@
                     </div>
 
                     <!-- left side -->
+                    <form action="{% url 'cart-add' product.id %}" method="post">
+                      {% csrf_token %}
                     <div class="col-span-1 flex flex-col">
                       <div class="flex-grow">
                         <!-- variant -->
@@ -270,8 +273,8 @@
                                 <input
                                   checked
                                   type="radio"
-                                  name="color-desktop"
-                                  value="{{ option.code }}"
+                                  name="{{ cart_form.color.name }}"
+                                  value="{{ option.name }}"
                                   id="color-desktop-{{ forloop.counter }}"
                                   class="peer hidden"
                                 />
@@ -305,8 +308,8 @@
                                 <input
                                   checked
                                   type="radio"
-                                  name="size-desktop"
-                                  value="size-desktop-{{ forloop.count }}"
+                                  name="{{ cart_form.size.name }}"
+                                  value="{{ size }}"
                                   id="size-desktop-{{ forloop.counter }}"
                                   class="peer hidden"
                                 />
@@ -350,7 +353,7 @@
                             </button>
                             <input
                               value="1"
-                              disabled
+                              name="quantity"
                               type="number"
                               class="flex h-6 w-6 w-full select-none items-center justify-center bg-transparent text-center outline-none"
                             />
@@ -363,18 +366,21 @@
                             </button>
                           </div>
                           <div class="flex items-center gap-x-1 text-primary">
-                            <span class="text-xl font-bold">1,800,000</span>
+                            <span class="text-xl font-bold">{{ product.get_final_price|intcomma }}</span>
                             <span>تومان</span>
                           </div>
                         </div>
                         <!-- add to cart -->
                         <div class="mb-6">
-                          <button class="btn-primary w-full py-3">
+                          <button type="submit" class="btn-primary w-full py-3">
                             افزودن به سبد خرید
                           </button>
+
                         </div>
                       </div>
                     </div>
+
+                    </form>
                   </div>
                 </div>
               </div>
@@ -539,7 +545,7 @@
                 class="flex gap-x-4 text-sm font-light text-primary md:text-base"
               >
                 <div>
-                  <a href="#"> کد کالا 6457# </a>
+                  <a href="#"> کد کالا {{ product.id }}# </a>
                 </div>
                 <div>
                   <a href="#"> 20 دیدگاه </a>
@@ -547,7 +553,9 @@
               </div>
               <div class="my-4 h-px w-full bg-background"></div>
               <!-- variant -->
-              <div class="mb-6 space-y-4">
+              <form action="{% url 'cart-add' product.id %}" method="post">
+                {% csrf_token %}
+                <div class="mb-6 space-y-4">
                 <!-- Color -->
                 {% if color_options %}
                 <div class="text-sm md:text-base">انتخاب رنگ</div>
@@ -558,8 +566,8 @@
                     <input
                       checked
                       type="radio"
-                      name="color"
-                      value="color-{{ option.code }}"
+                      name="{{ cart_form.color.name }}"
+                      value="{{ option.name }}"
                       id="color-{{ forloop.counter }}"
                       class="peer hidden"
                     />
@@ -590,8 +598,8 @@
                     <input
                       checked
                       type="radio"
-                      name="size-mobile"
-                      value="size-{{ size }}"
+                      name="{{ cart_form.size.name }}"
+                      value="{{ size }}"
                       id="size-mobile-{{ forloop.counter }}"
                       class="peer hidden"
                     />
@@ -621,7 +629,7 @@
                   </button>
                   <input
                     value="1"
-                    disabled
+                    name="{{ cart_form.quantity.name }}"
                     type="number"
                     class="flex h-6 w-6 w-full select-none items-center justify-center bg-transparent text-center outline-none"
                   />
@@ -668,7 +676,7 @@
                   تحویل اکسپرس در تهران, کرج
                 </div>
               </div>
-            </div>
+             </div>
             <!-- Property -->
             <div class="mb-6 rounded-lg bg-muted p-4 shadow-base lg:hidden">
               <p class="mb-6">ویژگی های محصول</p>
@@ -696,10 +704,12 @@
               <div class="flex items-center justify-between gap-x-6">
                 <!-- Button -->
                 <div class="flex grow">
-                  <button class="btn-primary w-full px-4 py-3 text-sm">
+                  <button type="submit" class="btn-primary w-full px-4 py-3 text-sm">
                     افزودن به سبد خرید
                   </button>
                 </div>
+              </form>
+
                 <!-- Price -->
                 <div class="space-y-1">
                   <!-- Old Price -->
@@ -725,6 +735,7 @@
                 </div>
               </div>
             </div>
+
           </div>
           <div class="mb-6">
             <div>
