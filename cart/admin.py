@@ -10,6 +10,9 @@ class CartItemInline(admin.TabularInline):
         'color',
         'size',
     ]
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('product')
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
@@ -30,3 +33,9 @@ class CartAdmin(admin.ModelAdmin):
     inlines = [
         CartItemInline,
     ]
+    list_per_page = 20
+    list_max_show_all = 30
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('user')

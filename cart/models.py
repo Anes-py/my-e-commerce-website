@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from products.models import Product, FeatureOption, Coupon
+
+from products.models import Product, Coupon
+
 
 class Cart(models.Model):
     """Represents a shopping cart for a logged-in user.
@@ -52,11 +54,12 @@ class CartItem(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        verbose_name=_("product")
+        related_name="products",
+        verbose_name=_("product"),
     )
     quantity = models.PositiveIntegerField(_("quantity"), default=1)
-    color = models.CharField(_("color"), max_length=10, blank=True)
-    size = models.CharField(_("size"), max_length=55, blank=True)
+    color = models.CharField(_("color"), max_length=10, null=True, blank=True)
+    size = models.CharField(_("size"), max_length=55, null=True, blank=True)
     # coupon = models.ForeignKey(
     #     Coupon,
     #     on_delete=models.SET_NULL,
