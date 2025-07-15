@@ -728,3 +728,16 @@ function calculateTotalHeight(content) {
 
   return totalHeight;
 }
+incrementBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  let currentValue = parseInt(input.value) || 1;
+  input.value = currentValue + 1;
+});
+
+decrementBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  let currentValue = parseInt(input.value) || 1;
+  if (currentValue > 1) {
+    input.value = currentValue - 1;
+  }
+});
