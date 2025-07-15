@@ -75,7 +75,7 @@ class ProductManager(models.Manager):
         """
 
         try:
-            category = Category.objects.prefetch_related("children")
+            category = Category.objects.prefetch_related("children").get(slug=category_slug)
         except Category.DoesNotExist:
             return self.none()
         subcategories = get_all_category(category)
