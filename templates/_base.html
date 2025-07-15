@@ -1656,7 +1656,7 @@
                     <!-- Mega menu -->
 
                     <!-- Mega Menu Wrapper -->
-<div class="absolute top-full w-full max-w-[1000px]">
+<div class="absolute top-full w-full max-w-[1000px] hidden group-hover:block">
   <div class="relative rounded-b-lg bg-muted shadow-base" id="desktopMegamenu">
     <div class="flex h-[450px] w-full overflow-hidden rounded-b-lg pt-0.5">
 
@@ -1724,36 +1724,6 @@
         </div>
       </div>
     </div>
-    <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const parentLinks = document.querySelectorAll('[data-child-id]');
-    const childBoxes = document.querySelectorAll('.child-box');
-
-    function hideAll() {
-      childBoxes.forEach(box => {
-        box.classList.add('hidden'); // مخفی کن
-      });
-    }
-
-    hideAll();
-
-    parentLinks.forEach(link => {
-      link.addEventListener('mouseenter', function (e) {
-        e.preventDefault();
-        hideAll();
-        const childId = this.getAttribute('data-child-id');
-        const target = document.getElementById(childId);
-        if (target) {
-          target.classList.remove('hidden'); // فقط این یکی رو نشون بده
-        }
-      });
-    });
-
-    const megaMenu = document.getElementById('desktopMegamenu');
-    megaMenu.addEventListener('mouseleave', hideAll);
-  });
-</script>
-
   </div>
 لهف شیی</div>
 
