@@ -1,8 +1,9 @@
 from django.views import generic
+
 from categories.models import Category, Brand
 from core.models import SiteSettings
+from cart.forms import AddToCartForm
 from .models import Product, FeatureOption
-
 
 class HomeView(generic.TemplateView):
     template_name = 'products/home.html'
@@ -178,5 +179,6 @@ class ProductDetailView(generic.DetailView):
         context.update({
             'color_options': color_options,
             'size_options': size_options,
+            'cart_form':AddToCartForm(),
         })
         return context
