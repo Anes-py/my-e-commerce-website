@@ -31,7 +31,7 @@ class Cart(models.Model):
         verbose_name_plural = _("Carts")
 
     def __str__(self):
-        return self.user.username or self.session_key
+        return f"{_("cart of")}{self.user.username if self.user else 'Guest'}  | {self.session_key}"
 
 
 class CartItem(models.Model):
@@ -49,7 +49,7 @@ class CartItem(models.Model):
         Cart,
         on_delete=models.CASCADE,
         related_name="items",
-        verbose_name=_("cart")
+        verbose_name=_("items")
     )
     product = models.ForeignKey(
         Product,
